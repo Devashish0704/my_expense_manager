@@ -24,16 +24,4 @@ Income endpoints allow users to manage their income. Users can create, read, upd
 - [Update Income](income/update_income.md): Update an existing income record.
 - [Delete Income](income/delete_income.md): Delete an existing income record.
 
-## Error Handling
-A comprehensive guide to understanding and handling errors that might occur while using the API.
 
-- [Error Handling](../errors/index.md): Common error codes, error response formats, and examples.
-
-## Changelog
-A log of all changes made to the API, including new features, bug fixes, and deprecated endpoints.
-
-- [Changelog](../changelog/index.md): Record of changes made to the API.
-
----
-
-Refer to the individual endpoint documentation for more detailed information and examples.

@@ -16,3 +16,16 @@ All requests require authentication using JWT. Refer to the [Authentication](end
 ## Endpoints Overview
 Refer to the [Endpoints](endpoints/index.md) section for a detailed overview of all available endpoints.
 
+## Error Handling
+A comprehensive guide to understanding and handling errors that might occur while using the API.
+
+- [Error Handling](errors/index.md): Common error codes, error response formats, and examples.
+
+## Changelog
+A log of all changes made to the API, including new features, bug fixes, and deprecated endpoints.
+
+- [Changelog](changelog/index.md): Record of changes made to the API.
+
+---
+
+Refer to the individual endpoint documentation for more detailed information and examples.
