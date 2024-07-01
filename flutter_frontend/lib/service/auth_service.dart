@@ -54,16 +54,6 @@ class AuthService {
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
         expenses = data.map((item) => item as Map<String, dynamic>).toList();
-        // List<String> categoryIds = [];
-        // if (expenses != null) {
-        //   for (var expense in expenses!) {
-        //     if (expense.containsKey('category_id')) {
-        //       categoryIds.add(expense['category_id'].toString());
-        //     }
-        //   }
-        // }
-        // print(categoryIds);
-
         return expenses;
       } else {
         throw Exception('Failed to load expenses');
