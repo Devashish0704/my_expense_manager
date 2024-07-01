@@ -23,11 +23,11 @@ const getBudgetById = async (req, res) => {
 };
 
 const createBudget = async (req, res) => {
-  const { user_id, category_id, amount, start_date, end_date } = req.body;
+  const {  category_id, amount, start_date, end_date } = req.body;
   try {
     // Insert budget into the database
     const result = await pool.query(queries.createBudget, [
-      user_id,
+      req.user.id,
       category_id,
       amount,
       start_date,
@@ -66,7 +66,7 @@ const deleteBudget = async (req, res) => {
 
 // Function to check budgets
 const checkBudgets = async (req, res) => {
-  const userId = req.params.userId;
+  const userId =       req.user.id  ;
   try {
     // Fetch all budgets for the given user ID
     const budgets = await pool.query('SELECT * FROM budget WHERE user_id = $1', [userId]);

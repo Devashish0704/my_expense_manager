@@ -23,18 +23,19 @@ const createCategory = 'INSERT INTO categories (name, description) VALUES ($1, $
 const updateCategory = 'UPDATE categories SET name = $1, description = $2 WHERE id = $3 RETURNING *';
 const deleteCategory = 'DELETE FROM categories WHERE id = $1 RETURNING *';
 
-const getPayments = 'SELECT * FROM payments';
-const getPaymentById = 'SELECT * FROM payments WHERE id = $1';
-const createPayment = 'INSERT INTO payments (user_id, amount, date, method, description) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-const updatePayment = 'UPDATE payments SET user_id = $1, amount = $2, date = $3, method = $4, description = $5 WHERE id = $6 RETURNING *';
-const deletePayment = 'DELETE FROM payments WHERE id = $1 RETURNING *';
-
 const getBudgets = 'SELECT * FROM budget';
 const getBudgetById = 'SELECT * FROM budget WHERE user_id = $1';
 const createBudget = 'INSERT INTO budget (user_id, category_id, amount, start_date, end_date) VALUES ($1, $2, $3, $4, $5) RETURNING *';
 const updateBudget = 'UPDATE budget SET user_id = $1, category_id = $2, amount = $3, start_date = $4, end_date = $5 WHERE id = $6 RETURNING *';
 const deleteBudget = 'DELETE FROM budget WHERE id = $1 RETURNING *';
 const checkBudget = 'SELECT SUM(amount) AS total_expenses FROM expense WHERE userid = $1 AND category_id = $2 AND date BETWEEN $3 AND $4';
+
+const getPayments = 'SELECT * FROM payments';
+const getPaymentById = 'SELECT * FROM payments WHERE id = $1';
+const createPayment = 'INSERT INTO payments (user_id, amount, date, method, description) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+const updatePayment = 'UPDATE payments SET user_id = $1, amount = $2, date = $3, method = $4, description = $5 WHERE id = $6 RETURNING *';
+const deletePayment = 'DELETE FROM payments WHERE id = $1 RETURNING *';
+
 
 
 const registerUser = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
