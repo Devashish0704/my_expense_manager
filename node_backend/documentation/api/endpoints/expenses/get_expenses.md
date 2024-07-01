@@ -2,7 +2,6 @@
 # Get Expenses by ID
 
 ## Endpoint
-plaintext
 GET /expenses/:id
 
 

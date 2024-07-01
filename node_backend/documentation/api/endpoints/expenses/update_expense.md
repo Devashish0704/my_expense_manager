@@ -2,7 +2,6 @@
 # Update Expense
 
 ## Endpoint
-plaintext
 PUT /expenses/:id
 
 

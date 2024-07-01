@@ -2,7 +2,7 @@
 # Delete Income
 
 ## Endpoint
-plaintext
+
 DELETE /income/:id
 
 
