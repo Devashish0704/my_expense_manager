@@ -1,7 +1,6 @@
 # Create Expense
 
 ## Endpoint
-plaintext
 POST /expenses
 
 
@@ -49,7 +48,7 @@ Creates a new expense for the authenticated user.
 
 ---
 
-This create_expense.md file now provides structured documentation for the POST /expenses endpoint:
+This add_expense.md file now provides structured documentation for the POST /expenses endpoint:
 
 - *Endpoint*: Specifies the HTTP method and endpoint path.
 - *Description*: Briefly explains the purpose of the endpoint.

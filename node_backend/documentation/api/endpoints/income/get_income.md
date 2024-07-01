@@ -2,7 +2,7 @@
 # Get Income by ID
 
 ## Endpoint
-plaintext
+
 GET /income/:id
 
 

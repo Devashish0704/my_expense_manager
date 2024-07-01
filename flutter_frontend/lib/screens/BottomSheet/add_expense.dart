@@ -14,11 +14,11 @@ class AddTransactionSheet extends StatefulWidget {
 }
 
 @override
-void initState() { 
-  super.initState();
-  context.read().add(any)
+// void initState() { 
+//   super.initState();
+//   context.read().add(any)
   
-}
+// }
 
 class _AddTransactionSheetState extends State<AddTransactionSheet> {
   @override

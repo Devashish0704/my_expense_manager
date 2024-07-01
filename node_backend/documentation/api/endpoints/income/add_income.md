@@ -2,7 +2,7 @@
 # Add Income
 
 ## Endpoint
-plaintext
+
 POST /income
 
 

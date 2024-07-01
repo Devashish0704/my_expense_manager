@@ -15,7 +15,6 @@ const getExpenses = async (req, res) => {
   }
 };
 
-
 const getExpensesById = async (req, res) => {
   const userId = req.params.id;
   try {
@@ -27,8 +26,6 @@ const getExpensesById = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 const createExpense = async (req, res) => {
   const { category_id, amount, description, date } = req.body;
@@ -46,7 +43,6 @@ const createExpense = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 const updateExpense = async (req, res) => {
   const { category_id, amount, description, date } = req.body;
@@ -66,8 +62,6 @@ const updateExpense = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 const deleteExpense = async (req, res) => {
   const { expense_id } = req.body;
@@ -126,11 +120,18 @@ const updateIncome = async (req, res) => {
   const { categoryid, amount, description, date } = req.body;
   const { id } = req.params;
   try {
-    const result = await pool.query(queries.updateIncome, [categoryid, amount, description, date, id, req.user.id]);
+    const result = await pool.query(queries.updateIncome, [
+      categoryid,
+      amount,
+      description,
+      date,
+      id,
+      req.user.id,
+    ]);
     res.status(200).json(result.rows[0]);
   } catch (err) {
-    console.error('Error updating income:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating income:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -141,8 +142,8 @@ const deleteIncome = async (req, res) => {
     const result = await pool.query(queries.deleteIncome, [income_id, id]);
     res.status(200).json(result.rows[0]);
   } catch (err) {
-    console.error('Error deleting income:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error deleting income:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -267,66 +268,7 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-const getBudgets = async (req, res) => {
-  try {
-    const result = await pool.query(queries.getBudgets);
-    res.status(200).json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
-const getBudgetById = async (req, res) => {
-  const id = parseInt(req.params.id);
-  try {
-    const result = await pool.query(queries.getBudgetById, [id]);
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const createBudget = async (req, res) => {
-  const { user_id, amount, month, year } = req.body;
-  try {
-    const result = await pool.query(queries.createBudget, [
-      user_id,
-      amount,
-      month,
-      year,
-    ]);
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const updateBudget = async (req, res) => {
-  const id = parseInt(req.params.id);
-  const { user_id, amount, month, year } = req.body;
-  try {
-    const result = await pool.query(queries.updateBudget, [
-      user_id,
-      amount,
-      month,
-      year,
-      id,
-    ]);
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const deleteBudget = async (req, res) => {
-  const id = parseInt(req.params.id);
-  try {
-    const result = await pool.query(queries.deleteBudget, [id]);
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
 // Payments
 const getPayments = async (req, res) => {
@@ -411,11 +353,7 @@ module.exports = {
   createCategory,
   updateCategory,
   deleteCategory,
-  getBudgets,
-  getBudgetById,
-  createBudget,
-  updateBudget,
-  deleteBudget,
+  
   getPayments,
   getPaymentById,
   createPayment,

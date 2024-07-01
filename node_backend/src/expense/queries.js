@@ -30,10 +30,12 @@ const updatePayment = 'UPDATE payments SET user_id = $1, amount = $2, date = $3,
 const deletePayment = 'DELETE FROM payments WHERE id = $1 RETURNING *';
 
 const getBudgets = 'SELECT * FROM budget';
-const getBudgetById = 'SELECT * FROM budget WHERE id = $1';
+const getBudgetById = 'SELECT * FROM budget WHERE user_id = $1';
 const createBudget = 'INSERT INTO budget (user_id, category_id, amount, start_date, end_date) VALUES ($1, $2, $3, $4, $5) RETURNING *';
 const updateBudget = 'UPDATE budget SET user_id = $1, category_id = $2, amount = $3, start_date = $4, end_date = $5 WHERE id = $6 RETURNING *';
 const deleteBudget = 'DELETE FROM budget WHERE id = $1 RETURNING *';
+const checkBudget = 'SELECT SUM(amount) AS total_expenses FROM expense WHERE userid = $1 AND category_id = $2 AND date BETWEEN $3 AND $4';
+
 
 const registerUser = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
 const loginUser = 'SELECT * FROM users WHERE email = $1';
@@ -49,31 +51,38 @@ module.exports = {
   createExpense,
   updateExpense,
   deleteExpense,
+
   getIncome,
   getIncomeByUserId,
   createIncome,
   updateIncome,
   deleteIncome,
+
   getUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+
   getCategories,
   getCategoryById,
   createCategory,
   updateCategory,
   deleteCategory,
+
   getPayments,
   getPaymentById,
   createPayment,
   updatePayment,
   deletePayment,
+  
   getBudgets,
   getBudgetById,
   createBudget,
   updateBudget,
   deleteBudget,
+  checkBudget,
+
   registerUser,
   loginUser,
   beforeAll,
