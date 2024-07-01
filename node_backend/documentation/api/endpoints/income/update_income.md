@@ -2,7 +2,7 @@
 # Update Income
 
 ## Endpoint
-plaintext
+
 PUT /income/:id
 
 

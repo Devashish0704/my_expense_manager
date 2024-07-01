@@ -1,7 +1,6 @@
 # Delete Expense
 
 ## Endpoint
-plaintext
 DELETE /expenses/:id
 
 

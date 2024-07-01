@@ -25,3 +25,10 @@ Income endpoints allow users to manage their income. Users can create, read, upd
 - [Delete Income](income/delete_income.md): Delete an existing income record.
 
 
+## Budget Endpoints
+Budget endpoints allow users to manage their budgets. Users can create, read, update, and delete budget records.
+
+- [Get Budget](budget/get_budget.md): Retrieve budget information.
+- [Add Budget](budget/add_budget.md): Create a new budget record.
+- [Update Budget](budget/update_budget.md): Update an existing budget record.
+- [Delete Budget](budget/delete_budget.md): Delete an existing budget record.
