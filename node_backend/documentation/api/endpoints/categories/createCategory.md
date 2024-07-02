@@ -74,6 +74,7 @@ Content-Type: application/json
 {
   "error": "Failed to create category"
 }
+```
 ---
 #### Notes
 
