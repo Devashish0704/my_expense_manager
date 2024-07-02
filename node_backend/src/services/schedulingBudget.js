@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const { sendNotification } = require('./notificationService'); // Implement your notification service
-const { checkBudget } = require('../expense//controller//budgetController').checkBudget; // Assuming you have a module for budget checking
+const { checkBudget } = require('../expense/controller/budgetController').checkBudget; // Assuming you have a module for budget checking
 
 // Example scheduler to run every day at 8 AM
 cron.schedule('0 8 * * *', async () => {
