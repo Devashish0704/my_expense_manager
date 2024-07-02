@@ -139,63 +139,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// Categories
-const getCategories = async (req, res) => {
-  try {
-    const result = await pool.query(queries.getCategories);
-    res.status(200).json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
-const getCategoryById = async (req, res) => {
-  const id = parseInt(req.params.id);
-  try {
-    const result = await pool.query(queries.getCategoryById, [id]);
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const createCategory = async (req, res) => {
-  const { name, description } = req.body;
-  try {
-    const result = await pool.query(queries.createCategory, [
-      name,
-      description,
-    ]);
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const updateCategory = async (req, res) => {
-  const id = parseInt(req.params.id);
-  const { name, description } = req.body;
-  try {
-    const result = await pool.query(queries.updateCategory, [
-      name,
-      description,
-      id,
-    ]);
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const deleteCategory = async (req, res) => {
-  const id = parseInt(req.params.id);
-  try {
-    const result = await pool.query(queries.deleteCategory, [id]);
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
 
 
@@ -273,11 +217,7 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  getCategories,
-  getCategoryById,
-  createCategory,
-  updateCategory,
-  deleteCategory,
+  
   
   getPayments,
   getPaymentById,
@@ -285,3 +225,91 @@ module.exports = {
   updatePayment,
   deletePayment,
 };
+
+// ALTER TABLE expenses ADD COLUMN is_recurring BOOLEAN DEFAULT false;
+// ALTER TABLE expenses ADD COLUMN recurrence_interval VARCHAR(20); -- e.g., 'daily', 'weekly', 'monthly'
+
+// ALTER TABLE income ADD COLUMN is_recurring BOOLEAN DEFAULT false;
+// ALTER TABLE income ADD COLUMN recurrence_interval VARCHAR(20); -- e.g., 'daily', 'weekly', 'monthly'
+
+// const pool = require('../../../db');
+// const cron = require('node-cron');
+
+// // Function to process recurring transactions
+// const processRecurringTransactions = async () => {
+//   try {
+//     // Fetch all recurring expenses
+//     const { rows: recurringExpenses } = await pool.query(`
+//       SELECT * FROM expenses
+//       WHERE is_recurring = true
+//     `);
+
+//     // Fetch all recurring income
+//     const { rows: recurringIncome } = await pool.query(`
+//       SELECT * FROM income
+//       WHERE is_recurring = true
+//     `);
+
+//     // Process each recurring expense
+//     for (const expense of recurringExpenses) {
+//       await handleRecurringTransaction(expense, 'expense');
+//     }
+
+//     // Process each recurring income
+//     for (const income of recurringIncome) {
+//       await handleRecurringTransaction(income, 'income');
+//     }
+//   } catch (error) {
+//     console.error('Error processing recurring transactions:', error);
+//   }
+// };
+
+// // Function to handle a single recurring transaction
+// const handleRecurringTransaction = async (transaction, type) => {
+//   const { id, user_id, amount, date, category_id, description, recurrence_interval } = transaction;
+
+//   // Determine the next occurrence date based on the recurrence interval
+//   const nextOccurrenceDate = getNextOccurrenceDate(date, recurrence_interval);
+
+//   // Insert the next occurrence of the transaction
+//   const insertQuery = type === 'expense' ? `
+//     INSERT INTO expenses (user_id, amount, date, category_id, description, is_recurring, recurrence_interval)
+//     VALUES ($1, $2, $3, $4, $5, $6, $7)
+//   ` : `
+//     INSERT INTO income (user_id, amount, date, category_id, description, is_recurring, recurrence_interval)
+//     VALUES ($1, $2, $3, $4, $5, $6, $7)
+//   `;
+
+//   await pool.query(insertQuery, [user_id, amount, nextOccurrenceDate, category_id, description, true, recurrence_interval]);
+// };
+
+// // Function to calculate the next occurrence date
+// const getNextOccurrenceDate = (currentDate, interval) => {
+//   const date = new Date(currentDate);
+
+//   switch (interval) {
+//     case 'daily':
+//       date.setDate(date.getDate() + 1);
+//       break;
+//     case 'weekly':
+//       date.setDate(date.getDate() + 7);
+//       break;
+//     case 'monthly':
+//       date.setMonth(date.getMonth() + 1);
+//       break;
+//     default:
+//       throw new Error('Invalid recurrence interval');
+//   }
+
+//   return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+// };
+
+// // Schedule the processing of recurring transactions
+// cron.schedule('0 0 * * *', () => {
+//   console.log('Processing recurring transactions...');
+//   processRecurringTransactions();
+// });
+
+// module.exports = {
+//   processRecurringTransactions,
+// };

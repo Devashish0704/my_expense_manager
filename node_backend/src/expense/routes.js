@@ -3,6 +3,7 @@ const express = require('express');
 const controllerA = require('./controller/authController');
 const controllerE = require('./controller/expenseController');
 const controllerB = require('./controller/budgetController');
+const controllerC = require('./controller/categoryController');
 const controllerI = require('./controller/incomeController');
 const passport = require('./passport');
 const { registerUserValidationRules, validate } = require('../users/validation');
@@ -52,11 +53,11 @@ router.delete('/budgets/:id',passport.authenticate('jwt', { session: false }), c
 router.get('/budgets/check',passport.authenticate('jwt', { session: false }), controllerB.checkBudgets);
 
 // Categories
-router.get('/categories', controllerE.getCategories);
-router.get('/categories/:id', controllerE.getCategoryById);
-router.post('/categories', controllerE.createCategory);
-router.put('/categories/:id', controllerE.updateCategory);
-router.delete('/categories/:id', controllerE.deleteCategory);
+router.get('/categories', controllerC.getCategories);
+router.get('/categories/:id', controllerC.getCategoryById);
+router.post('/categories', controllerC.createCategory);
+router.put('/categories/:id', controllerC.updateCategory);
+router.delete('/categories/:id', controllerC.deleteCategory);
 
 
 // Payments

@@ -1,34 +1,22 @@
 # Endpoints Overview
 
-This section provides an overview of all available endpoints in the Expense Management API. Each endpoint is documented in detail, including request and response formats, status codes, and example usage.
+### Authentication Endpoints
+- [Authentication Index](authentication/index.md)
 
-## Authentication Endpoints
-Authentication endpoints are used to register and log in users. They are essential for securing access to the API.
-
-- [Login](authentication/login.md): Authenticate a user and obtain a JWT token.
-- [Register](authentication/register.md): Register a new user.
-
-## Expense Endpoints
-Expense endpoints allow users to manage their expenses. Users can create, read, update, and delete expense records.
-
-- [Get Expenses](expenses/get_expenses.md): Retrieve a list of expenses.
-- [Add Expense](expenses/add_expense.md): Create a new expense record.
-- [Update Expense](expenses/update_expense.md): Update an existing expense record.
-- [Delete Expense](expenses/delete_expense.md): Delete an existing expense record.
-
-## Income Endpoints
-Income endpoints allow users to manage their income. Users can create, read, update, and delete income records.
-
-- [Get Income](income/get_income.md): Retrieve a list of income records.
-- [Add Income](income/add_income.md): Create a new income record.
-- [Update Income](income/update_income.md): Update an existing income record.
-- [Delete Income](income/delete_income.md): Delete an existing income record.
+### Expense Endpoints
+- [Expense Index](expenses/index.md)
 
 
-## Budget Endpoints
-Budget endpoints allow users to manage their budgets. Users can create, read, update, and delete budget records.
+### Income Endpoints
+- [Income Index](income/index.md)
 
-- [Get Budget](budget/get_budget.md): Retrieve budget information.
-- [Add Budget](budget/add_budget.md): Create a new budget record.
-- [Update Budget](budget/update_budget.md): Update an existing budget record.
-- [Delete Budget](budget/delete_budget.md): Delete an existing budget record.
+
+### Budget Endpoints
+- [Budget Index](budget/index.md)
+
+### Categories Endpoints
+- [Categories Index](categories/index.md)
+
+---
+
+These links will direct you to the index files where you can find detailed documentation for each set of API endpoints related to authentication, expenses, income, budgets, and categories management in the Expense Management API.
