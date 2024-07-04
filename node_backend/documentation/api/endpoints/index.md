@@ -17,6 +17,8 @@
 ### Categories Endpoints
 - [Categories Index](categories/index.md)
 
+### Recurring-Transaction Endpoints
+- [Recurring-Transaction Index](recurring-transactions/index.md)
 ---
 
-These links will direct you to the index files where you can find detailed documentation for each set of API endpoints related to authentication, expenses, income, budgets, and categories management in the Expense Management API.
+These links will direct you to the index files where you can find detailed documentation for each set of API endpoints related to authentication, expenses, income, budgets,Recurring-Transaction and categories management in the Expense Management API.
