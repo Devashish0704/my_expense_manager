@@ -14,6 +14,9 @@ app.use(cors());
 
 app.use('/api', routes);
 
+require('./src/tasks/schedulingFunction');
+
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -3,17 +3,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/screens/BottomSheet/bloc/bottom_sheet_bloc.dart';
 import 'package:flutter_frontend/screens/Home/bloc/home_bloc.dart';
 import 'package:flutter_frontend/widgets/Home_Screen/bottom_navigation.dart';
+import 'package:flutter_frontend/screens/Drawer/drawer.dart';
 import 'package:flutter_frontend/widgets/Home_Screen/fab.dart';
 import 'package:flutter_frontend/widgets/balance_row.dart';
 import 'package:flutter_frontend/widgets/calender.dart';
 import 'package:flutter_frontend/widgets/user_data_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<BottomSheetBloc>(context).add(FetchCategoriesEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Home'),
       ),
@@ -40,17 +55,21 @@ class HomeScreen extends StatelessWidget {
                   if (state is ExpenseAddedState) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        key: UniqueKey(), // Ensures the SnackBar is shown only once
+                        key:
+                            UniqueKey(), // Ensures the SnackBar is shown only once
                         content: Text(state.message),
-                        backgroundColor: state.isSuccess ? Colors.green : Colors.red,
+                        backgroundColor:
+                            state.isSuccess ? Colors.green : Colors.red,
                       ),
                     );
                   } else if (state is IncomeAddedState) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        key: UniqueKey(), // Ensures the SnackBar is shown only once
+                        key:
+                            UniqueKey(), // Ensures the SnackBar is shown only once
                         content: Text(state.message),
-                        backgroundColor: state.isSuccess ? Colors.green : Colors.red,
+                        backgroundColor:
+                            state.isSuccess ? Colors.green : Colors.red,
                       ),
                     );
                   }
@@ -78,9 +97,12 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      drawer: HomeDrawer(),
       floatingActionButton: const FabAdd(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: const BottomNavigationFab(),
+      bottomNavigationBar: BottomNavigationFab(
+        scaffoldKey: _scaffoldKey,
+      ),
     );
   }
 }

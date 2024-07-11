@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_frontend/screens/LogIn/bloc/log_in_bloc.dart';
-import 'package:flutter_frontend/screens/SignUp/sign_up.dart';
+import 'package:flutter_frontend/screens/Authorization/LogIn/bloc/log_in_bloc.dart';
+import 'package:flutter_frontend/screens/Authorization/SignUp/sign_up.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
