@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BottomNavigationFab extends StatelessWidget {
-  const BottomNavigationFab({super.key});
+  BottomNavigationFab({super.key, required this.scaffoldKey});
+  final GlobalKey<ScaffoldState> scaffoldKey; // Add this line
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +13,25 @@ class BottomNavigationFab extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
+          IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+              scaffoldKey.currentState?.openDrawer();
+              }),
           IconButton(
               icon: const Icon(Icons.pie_chart),
               onPressed: () {
                 Navigator.pushNamed(context, '/stats');
+              }),
+          IconButton(
+              icon: const Icon(Icons.access_alarm_rounded),
+              onPressed: () {
+              scaffoldKey.currentState?.openDrawer();
+              }),
+          IconButton(
+              icon: const Icon(Icons.access_alarm_rounded),
+              onPressed: () {
+              scaffoldKey.currentState?.openDrawer();
               }),
         ],
       ),

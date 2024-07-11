@@ -15,5 +15,20 @@ class SaveIncomeDetailsEvent extends BottomSheetEvent {
   SaveIncomeDetailsEvent({required this.incomeData});
 }
 
-class AddExpenseEvent extends BottomSheetEvent{}
-class AddIncomeEvent extends BottomSheetEvent{}
+class AddExpenseEvent extends BottomSheetEvent {}
+
+class AddIncomeEvent extends BottomSheetEvent {}
+
+class FetchCategoriesEvent extends BottomSheetEvent {}
+
+class AddCategoryEvent extends BottomSheetEvent {
+  final Map<String, String> expeseCategoryData;
+
+  AddCategoryEvent({required this.expeseCategoryData});
+}
+
+class DeleteCategoryEvent extends BottomSheetEvent {
+  final int categoryId;
+
+  DeleteCategoryEvent({required this.categoryId});
+}
