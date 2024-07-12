@@ -28,7 +28,7 @@ cron.schedule('0 14 * * *', async () => {
 
 const { processRecurringTransactions } = require('./recurringTransactions');
 
-cron.schedule('18 11 * * *', async () => {
+cron.schedule('06 11 * * *', async () => {
     console.log('Running scheduled task to process recurring transactions');
     await processRecurringTransactions();
 });
