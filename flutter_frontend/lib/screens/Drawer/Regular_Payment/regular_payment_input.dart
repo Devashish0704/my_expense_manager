@@ -103,8 +103,6 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
 
       BlocProvider.of<RegularPaymentBloc>(context).add(
           AddRegularPaymentEvent(regularPaymentData: addRegularPaymentData));
-      // BlocProvider.of<RegularPaymentBloc>(context)
-      //     .add(FetchRegularPaymentsEvent());
 
       Navigator.pop(context);
     }

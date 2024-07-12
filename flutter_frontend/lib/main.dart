@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/demo.dart';
+import 'package:flutter_frontend/screens/Authorization/Phone%20Verification/bloc/phone_verification_bloc.dart';
+import 'package:flutter_frontend/screens/Authorization/Phone%20Verification/phone_verification.dart';
 import 'package:flutter_frontend/screens/BottomSheet/bloc/bottom_sheet_bloc.dart';
+import 'package:flutter_frontend/screens/Drawer/Budget/bloc/budget_bloc.dart';
+import 'package:flutter_frontend/screens/Drawer/Budget/budget.dart';
 import 'package:flutter_frontend/screens/Drawer/Regular_Payment/bloc/category_bloc.dart';
 import 'package:flutter_frontend/screens/Drawer/Regular_Payment/regular_payments.dart';
 import 'package:flutter_frontend/screens/Drawer/bloc/regular_payment_bloc.dart';
@@ -14,10 +18,12 @@ import 'package:flutter_frontend/screens/Authorization/SignUp/sign_up.dart';
 import 'package:flutter_frontend/screens/stats.dart';
 import 'package:flutter_frontend/screens/welcome.dart';
 import 'package:flutter_frontend/service/auth_service.dart';
+import 'package:flutter_frontend/service/budget_service.dart';
 import 'package:flutter_frontend/service/cat_service.dart';
 import 'package:flutter_frontend/service/dio.dart';
 import 'package:flutter_frontend/service/expense_service.dart';
 import 'package:flutter_frontend/service/income_service.dart';
+import 'package:flutter_frontend/service/phone_verification_service.dart';
 import 'package:flutter_frontend/service/regular_tranx_service.dart';
 
 void main() {
@@ -40,6 +46,12 @@ void main() {
         ),
         BlocProvider<CategoryBloc>(
           create: (context) => CategoryBloc(),
+        ),
+        BlocProvider<BudgetBloc>(
+          create: (context) => BudgetBloc(BudgetService(), AuthService()),
+        ),
+        BlocProvider<PhoneVerificationBloc>(
+          create: (context) => PhoneVerificationBloc(PhoneVerificationService()),
         ),
         BlocProvider<BottomSheetBloc>(
             create: (context) => BottomSheetBloc(ExpenseService(), IncomeService(), CategoryService())),
@@ -77,11 +89,12 @@ class MyApp extends StatelessWidget {
         '/stats': (context) => const Stats(),
         '/demo': (context) => const Demo(),
         '/regular_payments': (context) => RegularPaymentScreen(),
+        '/budget': (context) => Budget(),
+        '/verify-phone': (context) => PhoneVerification()
       },
     );
   }
 }
-
 
 
 // {
