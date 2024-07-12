@@ -51,7 +51,7 @@ router.get('/budgets/:id',passport.authenticate('jwt', { session: false }), cont
 router.post('/budgets',passport.authenticate('jwt', { session: false }), controllerB.createBudget);
 router.put('/budgets/:id',passport.authenticate('jwt', { session: false }), controllerB.updateBudget);
 router.delete('/budgets/:id',passport.authenticate('jwt', { session: false }), controllerB.deleteBudget);
-router.get('/budgets/check',passport.authenticate('jwt', { session: false }), controllerB.checkBudgets);
+router.get('/budgets/check/:id',passport.authenticate('jwt', { session: false }), controllerB.checkBudgets);
 
 // Categories
 router.get('/categories', controllerC.getCategories);

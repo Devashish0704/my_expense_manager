@@ -27,8 +27,8 @@ const checkCategory = `SELECT id FROM categories WHERE id = $1 AND is_common = f
 
 const getBudgets = 'SELECT * FROM budget';
 const getBudgetById = 'SELECT * FROM budget WHERE user_id = $1';
-const createBudget = 'INSERT INTO budget (user_id, category_id, amount, start_date, end_date) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-const updateBudget = 'UPDATE budget SET user_id = $1, category_id = $2, amount = $3, start_date = $4, end_date = $5 WHERE id = $6 RETURNING *';
+const createBudget = 'INSERT INTO budget (user_id, category_id, allocated_budget, start_date, end_date) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+const updateBudget = 'UPDATE budget SET category_id = $1, allocated_budget = $2, start_date = $3, end_date = $4 WHERE id = $5 RETURNING *';
 const deleteBudget = 'DELETE FROM budget WHERE id = $1 RETURNING *';
 const checkBudget = 'SELECT SUM(amount) AS total_expenses FROM expenses WHERE user_id = $1 AND category_id = $2 AND date BETWEEN $3 AND $4';
 
