@@ -63,10 +63,10 @@ const getIncome = async (req, res) => {
   };
   
   const deleteIncome = async (req, res) => {
-    const { income_id } = req.body;
+    const { user_id } = req.body;
     const { id } = req.params;
     try {
-      const result = await pool.query(queries.deleteIncome, [income_id, id]);
+      const result = await pool.query(queries.deleteIncome, [user_id, id]);
       res.status(200).json(result.rows[0]);
     } catch (err) {
       console.error("Error deleting income:", err);
