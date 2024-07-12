@@ -1,4 +1,6 @@
 // server.js
+require('dotenv').config(); // Add this line at the top
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -26,6 +28,7 @@ app.get('/health', (req, res) => {
 // Example endpoint that interacts with the database
 app.get('/test-db', async (req, res) => {
   try {
+    console.log('Trying to connect to the database');
     const result = await pool.query('SELECT NOW()');
     res.send(result.rows);
   } catch (error) {
