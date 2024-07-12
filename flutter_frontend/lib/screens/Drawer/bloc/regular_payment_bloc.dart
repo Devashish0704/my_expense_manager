@@ -40,7 +40,7 @@ class RegularPaymentBloc extends Bloc<RegularPaymentEvent, RegularPaymentState> 
     });
      on<LongPressEvent>((event, emit) async {
       try {
-        await (authService.userID, event.RPId);
+        (authService.userID, event.RPId);
         await regularPaymentService.deleteRegularPayments(event.RPId);
         emit(RegularPaymentDeletedState());
         add(FetchRegularPaymentsEvent());

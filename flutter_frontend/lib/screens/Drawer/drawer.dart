@@ -29,6 +29,14 @@ class HomeDrawer extends StatelessWidget {
           },
         ),
         ListTile(
+          leading: Icon(Icons.currency_rupee_sharp),
+          title: Text('Set Budget'),
+          onTap: () {
+            Navigator.pushNamed(context, '/budget');
+          },
+        ),
+        
+        ListTile(
           leading: Icon(Icons.message),
           title: Text('Messages'),
           onTap: () {
