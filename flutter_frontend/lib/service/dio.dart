@@ -9,7 +9,7 @@ class DioClient {
 
   // Setup method to configure the Dio instance
   static void setup() {
-    _dio.options.baseUrl = 'http://localhost:3000/api';
+    _dio.options.baseUrl = 'https://my-expense-manager.onrender.com/api';
     _dio.options.connectTimeout = const Duration(seconds: 5); // 5 seconds
     _dio.options.receiveTimeout = const Duration(seconds: 5); // 5 seconds
   }
