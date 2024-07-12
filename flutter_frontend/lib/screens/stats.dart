@@ -4,15 +4,16 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/data/expense_category_data.dart';
-import 'package:flutter_frontend/service/auth_service.dart';
+import 'package:flutter_frontend/service/cat_service.dart';
+import 'package:flutter_frontend/service/expense_service.dart';
 
 class Stats extends StatelessWidget {
   const Stats({super.key});
 
   @override
   Widget build(BuildContext context) {
-    AuthService authService = AuthService();
-    List<Map<String, dynamic>>? expenses = authService.expenses;
+    ExpenseService expenseService = ExpenseService();
+    List<Map<String, dynamic>>? expenses = expenseService.expenses;
     List<String> categoryIds = [];
     if (expenses != null) {
       for (var expense in expenses) {
@@ -25,8 +26,8 @@ class Stats extends StatelessWidget {
     List<String> categoryNamesList = [];
     for (var categoryId in categoryIds) {
       int id = int.parse(categoryId);
-      if (expenseCategories.containsKey(id)) {
-        categoryNamesList.add(expenseCategories[id]!);
+      if (CategoryService.expenseCategories.containsKey(id)) {
+        categoryNamesList.add(CategoryService.expenseCategories[id]!);
       }
     }
 
@@ -71,7 +72,8 @@ class Stats extends StatelessWidget {
                 centerSpaceRadius: 50,
                 sectionsSpace: 4,
               ),
-              swapAnimationDuration: const Duration(milliseconds: 150), // Optional
+              swapAnimationDuration:
+                  const Duration(milliseconds: 150), // Optional
               swapAnimationCurve: Curves.bounceIn, // Optional
             ),
           ),
@@ -128,7 +130,7 @@ class PieChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     int total = data.values.reduce((a, b) => a + b);
-    double startAngle = -pi/2 ;
+    double startAngle = -pi / 2;
 
     data.forEach((category, count) {
       final sweepAngle = (count / total) * 2 * pi;

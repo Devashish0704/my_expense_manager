@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/constants.dart';
-import 'package:flutter_frontend/screens/BottomSheet/add_expense.dart';
+import 'package:flutter_frontend/screens/BottomSheet/add_transaction.dart';
 import 'package:flutter_frontend/screens/Home/bloc/home_bloc.dart';
 
 class FabAdd extends StatelessWidget {

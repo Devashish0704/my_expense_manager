@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_frontend/screens/LogIn/logIn.dart';
-import 'package:flutter_frontend/screens/SignUp/bloc/sign_up_bloc.dart';
+import 'package:flutter_frontend/screens/Authorization/LogIn/logIn.dart';
+import 'package:flutter_frontend/screens/Authorization/SignUp/bloc/sign_up_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {
   final TextEditingController fullNameSignUpController =

@@ -55,6 +55,32 @@ const getCategories = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch categories' });
   }
 };
+ const getCategoryByIdForDeletion = async (req, res) => {
+  const { id } = req.params; // Assuming id is passed as a route parameter (user_id)
+  
+  try {
+    // Execute the SQL query to fetch categories by user_id
+    const { rows } = await pool.query(queries.getCategoryByIdForDeletion, [id]);
+
+      let incomeCategories = {};
+      let expenseCategories = {};
+
+       // Iterate through fetched categories and map them based on type
+       rows.forEach(category => {
+        if (category.type === 'income') {
+          incomeCategories[category.id] = category.name;
+        } else if (category.type === 'expense') {
+          expenseCategories[category.id] = category.name;
+        }
+      });
+
+    // Respond with the fetched categories
+    res.status(200).json({ incomeCategories, expenseCategories });
+  } catch (error) {
+    console.error('Error fetching categories by user_id:', error);
+    res.status(500).json({ error: 'Failed to fetch categories' });
+  }
+};
 
 
 const createCategory = async (req, res) => {
@@ -97,7 +123,7 @@ const deleteCategory = async (req, res) => {
 
   try {
     // Check if the category exists and is not common
-    const { rows: existingCategory } = await pool.query(queries.checkCategory, [id]);
+    const { rows: existingCategory } = await pool.query(queries.deleteCategory, [id]);
 
     if (existingCategory.length === 0) {
       return res.status(404).json({ error: 'Category not found or cannot be deleted' });
@@ -117,6 +143,7 @@ const deleteCategory = async (req, res) => {
 module.exports = {
   getCategories,
   getCategoryById,
+  getCategoryByIdForDeletion,
   createCategory,
   updateCategory,
   deleteCategory,

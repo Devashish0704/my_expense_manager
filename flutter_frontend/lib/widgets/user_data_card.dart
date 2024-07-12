@@ -1,7 +1,11 @@
+
+
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_frontend/data/expense_category_data.dart';
 import 'package:flutter_frontend/screens/Home/bloc/home_bloc.dart';
+import 'package:flutter_frontend/service/cat_service.dart';
 import 'package:intl/intl.dart';
 
 class HomeDataCards extends StatelessWidget {
@@ -61,7 +65,7 @@ Widget expenseCard(
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text('${expenseCategories[categoryText]}'),
+              Text('${CategoryService.expenseCategories[categoryText]}'),
               Text(formatDate(date, 'EEE, MMM d, y')),
               Text('$description'),
             ],
@@ -93,7 +97,7 @@ Widget expenseCard(
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('${incomeCategories[categoryText]}'),
+                Text('${CategoryService.incomeCategories[categoryText]}'),
                 Text(formatDate(date, 'EEE, MMM d, y')),
                 Text('$description'),
               ],

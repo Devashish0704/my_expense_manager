@@ -5,6 +5,7 @@ const controllerE = require('./controller/expenseController');
 const controllerB = require('./controller/budgetController');
 const controllerC = require('./controller/categoryController');
 const controllerI = require('./controller/incomeController');
+const controllerRT = require('./controller/recurring-txns');
 const passport = require('./passport');
 const { registerUserValidationRules, validate } = require('../users/validation');
 const { generateOTP, verifyOTP } = require('../expense/controller/authController');
@@ -50,14 +51,24 @@ router.get('/budgets/:id',passport.authenticate('jwt', { session: false }), cont
 router.post('/budgets',passport.authenticate('jwt', { session: false }), controllerB.createBudget);
 router.put('/budgets/:id',passport.authenticate('jwt', { session: false }), controllerB.updateBudget);
 router.delete('/budgets/:id',passport.authenticate('jwt', { session: false }), controllerB.deleteBudget);
-router.get('/budgets/check',passport.authenticate('jwt', { session: false }), controllerB.checkBudgets);
+router.get('/budgets/check/:id',passport.authenticate('jwt', { session: false }), controllerB.checkBudgets);
 
 // Categories
 router.get('/categories', controllerC.getCategories);
-router.get('/categories/:id', controllerC.getCategoryById);
-router.post('/categories', controllerC.createCategory);
-router.put('/categories/:id', controllerC.updateCategory);
-router.delete('/categories/:id', controllerC.deleteCategory);
+router.get('/categories/:id',passport.authenticate('jwt', { session: false }), controllerC.getCategoryById);
+router.get('/categories/deletion/:id',passport.authenticate('jwt', { session: false }), controllerC.getCategoryByIdForDeletion);
+router.post('/categories',passport.authenticate('jwt', { session: false }), controllerC.createCategory);
+router.put('/categories/:id',passport.authenticate('jwt', { session: false }), controllerC.updateCategory);
+router.delete('/categories/:id',passport.authenticate('jwt', { session: false }), controllerC.deleteCategory);
+
+
+
+// Recurring Transactions
+router.get('/recurring-txns', controllerRT.getRecurringTxns);
+router.get('/recurring-txns/:id', passport.authenticate('jwt', { session: false }), controllerRT.getRecurringTxnById);
+router.post('/recurring-txns', controllerRT.createRecurringTxn);
+router.put('/recurring-txns/:id', passport.authenticate('jwt', { session: false }), controllerRT.updateRecurringTxn);
+router.delete('/recurring-txns/:id', passport.authenticate('jwt', { session: false }), controllerRT.deleteRecurringTxn);
 
 
 // Payments
