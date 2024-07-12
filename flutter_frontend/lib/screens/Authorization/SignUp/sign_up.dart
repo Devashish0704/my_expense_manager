@@ -67,9 +67,19 @@ class SignUpScreen extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Verify your phone number if you want:',
-              style: TextStyle(fontStyle: FontStyle.italic),
+            Row(
+              children: [
+                const Text(
+                  'Verify your phone number if you want:',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/verify-phone');
+                  },
+                  child: const Text('Verify'),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             BlocConsumer<SignUpBloc, SignUpState>(
