@@ -1,24 +1,11 @@
 // server.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const routes = require('./src/expense/routes');
 const cors = require('cors');
+const routes = require('./src/expense/routes');
+const pool = require("./db");
 
 const app = express();
-
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-
-
-app.use('/api', routes);
-
-require('./src/tasks/schedulingFunction');
-
-app.get('/health', (req, res) => {
-  res.send('Server is running');
-});
 
 // Middleware to log all requests
 app.use((req, res, next) => {
@@ -26,13 +13,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to parse JSON request bodies
-app.use(express.json());
-
-// Database connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -61,6 +45,12 @@ app.post('/add-data', async (req, res) => {
     res.status(500).send({ error: 'Internal server error', message: error.message });
   }
 });
+
+// Define routes
+app.use('/api', routes);
+
+// Scheduling function
+require('./src/tasks/schedulingFunction');
 
 // Error handling middleware
 app.use((err, req, res, next) => {
