@@ -1,4 +1,6 @@
 // src/expense/routes.js
+require('dotenv').config();
+
 const express = require('express');
 const controllerA = require('./controller/authController');
 const controllerE = require('./controller/expenseController');
@@ -8,9 +10,6 @@ const controllerI = require('./controller/incomeController');
 const controllerRT = require('./controller/recurring-txns');
 const passport = require('./passport');
 const { registerUserValidationRules, validate } = require('../users/validation');
-const { generateOTP, verifyOTP } = require('../expense/controller/authController');
-
-
 
 const router = express.Router();
 
@@ -21,6 +20,8 @@ router.post('/auth/verify-otp', controllerA.verifyOTP);
 // Authentication routes
 router.post('/register', registerUserValidationRules(), validate, controllerA.registerUser);
 router.post('/login', controllerA.loginUser);
+router.post('/auth/google/verify', controllerA.googleUser)
+  
 
 // Users
 router.get('/users', controllerE.getUsers);
@@ -55,7 +56,7 @@ router.get('/budgets/check/:id',passport.authenticate('jwt', { session: false })
 
 // Categories
 router.get('/categories', controllerC.getCategories);
-router.get('/categories/:id',passport.authenticate('jwt', { session: false }), controllerC.getCategoryById);
+router.get('/categories/:id', controllerC.getCategoryById);
 router.get('/categories/deletion/:id',passport.authenticate('jwt', { session: false }), controllerC.getCategoryByIdForDeletion);
 router.post('/categories',passport.authenticate('jwt', { session: false }), controllerC.createCategory);
 router.put('/categories/:id',passport.authenticate('jwt', { session: false }), controllerC.updateCategory);
