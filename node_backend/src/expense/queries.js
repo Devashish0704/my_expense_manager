@@ -13,7 +13,7 @@ const deleteIncome = 'DELETE FROM income WHERE id = $1 AND user_id = $2 RETURNIN
 
 const getUsers = 'SELECT * FROM users';
 const getUserById = 'SELECT * FROM users WHERE id = $1';
-const createUser = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
+// const createUser = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
 const updateUser = 'UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *';
 const deleteUser = 'DELETE FROM users WHERE id = $1 RETURNING *';
 
@@ -55,6 +55,10 @@ const beforeAll = 'CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name
 const afterAll = 'DROP TABLE IF EXISTS users';
 
 
+const createUser = `INSERT INTO users (google_id, name, email, created_at) VALUES ($1, $2, $3, NOW()) RETURNING id, name, email, created_at`;
+
+const findUserByGoogleId = `SELECT id, google_id AS googleId, name, email, created_at FROM users WHERE google_id = $1`;
+
 
 module.exports = {
   getExpenses,
@@ -72,6 +76,7 @@ module.exports = {
   getUsers,
   getUserById,
   createUser,
+  findUserByGoogleId,
   updateUser,
   deleteUser,
 

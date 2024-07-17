@@ -1,28 +1,75 @@
+require('dotenv').config();
+
 const pool = require('../../../db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const queries = require('../queries');
+const axios = require('axios');
+
 
 const { authenticator } = require('otplib');
 const twilio = require('twilio');
-require('dotenv').config();
+
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 const otpStore = {}; // In-memory store for OTPs
 const secretOrKey = process.env.SECRET_JWT;
-  
+
+
+const googleUser = async (req, res) => {
+  const { access_token } = req.body;
+  try {
+    // Fetch user info from Google Userinfo endpoint
+    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`);
+    const profile = response.data;
+
+    // Check if user exists in your database by Google ID
+    let user = await pool.query(queries.findUserByGoogleId, [profile.id]);
+
+    if (user.rows.length === 0) {
+      // Create new user if not exists
+      const result = await pool.query(queries.createUser, [profile.id, profile.name, profile.email]);
+      user = result.rows[0];
+    } else {
+      user = user.rows[0];
+    }
+
+    // Generate JWT
+    const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
+
+    res.json({ id: user.id, token });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: 'Token verification failed' });
+  }
+}  
+
+
+
+
+
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await pool.query(queries.registerUser, [name, email, hashedPassword || null]);
-    res.status(201).json(result.rows[0]);
+    
+    // Assuming result.rows[0] contains the newly registered user's data
+    const newUser = result.rows[0];
+    
+    // Generate JWT token
+    const payload = { id: newUser.id, username: newUser.username };
+    const token = jwt.sign(payload, secretOrKey, { expiresIn: '1h' });
+    
+    // Return token and user ID
+    res.status(201).json({ token, id: newUser.id });
   } catch (err) {
     console.error('Error registering user:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -113,5 +160,6 @@ module.exports = {
   registerUser,
   loginUser,
   generateOTP,
-  verifyOTP
+  verifyOTP,
+  googleUser
 };
