@@ -56,7 +56,7 @@ router.get('/budgets/check/:id',passport.authenticate('jwt', { session: false })
 
 // Categories
 router.get('/categories', controllerC.getCategories);
-router.get('/categories/:id', controllerC.getCategoryById);
+router.get('/categories/:id',passport.authenticate('jwt', { session: false }), controllerC.getCategoryById);
 router.get('/categories/deletion/:id',passport.authenticate('jwt', { session: false }), controllerC.getCategoryByIdForDeletion);
 router.post('/categories',passport.authenticate('jwt', { session: false }), controllerC.createCategory);
 router.put('/categories/:id',passport.authenticate('jwt', { session: false }), controllerC.updateCategory);
