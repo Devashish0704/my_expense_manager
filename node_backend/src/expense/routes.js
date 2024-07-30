@@ -8,6 +8,7 @@ const controllerB = require('./controller/budgetController');
 const controllerC = require('./controller/categoryController');
 const controllerI = require('./controller/incomeController');
 const controllerRT = require('./controller/recurring-txns');
+const imageController = require('./controller/imageController');
 const passport = require('./passport');
 const { registerUserValidationRules, validate } = require('../users/validation');
 
@@ -21,6 +22,13 @@ router.post('/auth/verify-otp', controllerA.verifyOTP);
 router.post('/register', registerUserValidationRules(), validate, controllerA.registerUser);
 router.post('/login', controllerA.loginUser);
 router.post('/auth/google/verify', controllerA.googleUser)
+
+
+//  profile image
+router.post('/profile-image', imageController.uploadOrUpdateImage);
+router.get('/profile-image/:userId', imageController.getImage);
+router.delete('/profile-image/:userId', imageController.deleteImage);
+
   
 
 // Users
