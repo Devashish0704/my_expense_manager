@@ -14,9 +14,12 @@ const deleteIncome = 'DELETE FROM income WHERE id = $1 AND user_id = $2 RETURNIN
 
 const getUsers = 'SELECT * FROM users';
 const getUserById = 'SELECT * FROM users WHERE id = $1';
-// const createUser = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
 const updateUser = 'UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *';
 const deleteUser = 'DELETE FROM users WHERE id = $1 RETURNING *';
+
+const upProfilePic = 'INSERT INTO users (id, profile_image) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET profile_image = EXCLUDED.profile_image';
+const getProfilePic = 'SELECT profile_image FROM users WHERE id = $1';
+const deleteProfilePic = 'UPDATE users SET profile_image = NULL WHERE id = $1';
 
 const getCategories = 'SELECT * FROM categories';
 const getCategoryById = `SELECT id, name, description, type, user_id, is_common FROM categories WHERE user_id IS NULL OR user_id = $1`;
@@ -80,6 +83,10 @@ module.exports = {
   findUserByGoogleId,
   updateUser,
   deleteUser,
+
+  upProfilePic,
+  getProfilePic,
+  deleteProfilePic,
 
   getCategories,
   getCategoryById,
