@@ -25,9 +25,9 @@ router.post('/auth/google/verify', controllerA.googleUser)
 
 
 //  profile image
-router.post('/profile-image', imageController.uploadOrUpdateImage);
-router.get('/profile-image/:userId', imageController.getImage);
-router.delete('/profile-image/:userId', imageController.deleteImage);
+router.post('/profile-image',passport.authenticate('jwt', { session: false }), imageController.uploadOrUpdateImage);
+router.get('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.getImage);
+router.delete('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.deleteImage);
 
   
 
