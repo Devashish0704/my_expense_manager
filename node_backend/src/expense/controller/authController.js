@@ -38,7 +38,7 @@ const googleUser = async (req, res) => {
     // Generate JWT
     const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
 
-    res.json({ id: user.id, token });
+    res.json({ id: user.id, token, name: newUser.name });
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: 'Token verification failed' });
@@ -63,7 +63,7 @@ const registerUser = async (req, res) => {
     const token = jwt.sign(payload, secretOrKey, { expiresIn: '1h' });
     
     // Return token and user ID
-    res.status(201).json({ token, id: newUser.id });
+    res.status(201).json({ token, id: newUser.id, name: newUser.name});
   } catch (err) {
     console.error('Error registering user:', err);
     res.status(500).json({ error: 'Internal server error' });
@@ -83,7 +83,7 @@ const loginUser = async (req, res) => {
       if (isMatch) {
         const payload = { id: user.id, username: user.username };
         const token = jwt.sign(payload, secretOrKey, { expiresIn: '1h' });
-        res.status(200).json({ token, id: user.id });
+        res.status(200).json({ token, id: user.id, name: newUser.name });
       } else {
         res.status(400).json({ error: 'Password incorrect' });
       }
