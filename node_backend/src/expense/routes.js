@@ -22,6 +22,11 @@ router.post('/auth/verify-otp', controllerA.verifyOTP);
 router.post('/register', registerUserValidationRules(), validate, controllerA.registerUser);
 router.post('/login', controllerA.loginUser);
 router.post('/auth/google/verify', controllerA.googleUser)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
 
 
 //  profile image
@@ -30,6 +35,35 @@ router.get('/profile-image/:userId',passport.authenticate('jwt', { session: fals
 router.delete('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.deleteImage);
 
   
+<<<<<<< HEAD
+=======
+
+// Users
+router.get('/users', controllerE.getUsers);
+router.get('/users/:id', controllerE.getUserById);
+router.post('/users', controllerE.createUser);
+router.put('/users/:id', controllerE.updateUser);
+router.delete('/users/:id', controllerE.deleteUser);
+
+>>>>>>> 2ae45eac08b0004ae0de4a76c9209d3b360fd5f1
+
+
+<<<<<<< HEAD
+//  profile image
+router.post('/profile-image',passport.authenticate('jwt', { session: false }), imageController.uploadOrUpdateImage);
+router.get('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.getImage);
+router.delete('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.deleteImage);
+
+  
+
+// Users
+router.get('/users', controllerE.getUsers);
+router.get('/users/:id', controllerE.getUserById);
+router.post('/users', controllerE.createUser);
+router.put('/users/:id', controllerE.updateUser);
+router.delete('/users/:id', controllerE.deleteUser);
+
+>>>>>>> main
 
 // Users
 router.get('/users', controllerE.getUsers);
@@ -54,6 +88,16 @@ router.put('/income/:id', passport.authenticate('jwt', { session: false }),contr
 router.delete('/income/:id',passport.authenticate('jwt', { session: false }), controllerI.deleteIncome);
 
 
+=======
+//Income
+router.get('/income', controllerI.getIncome);
+router.get('/income/:id', passport.authenticate('jwt', { session: false }),controllerI.getIncomeById);
+router.post('/income', passport.authenticate('jwt', { session: false }),controllerI.createIncome);
+router.put('/income/:id', passport.authenticate('jwt', { session: false }),controllerI.updateIncome);
+router.delete('/income/:id',passport.authenticate('jwt', { session: false }), controllerI.deleteIncome);
+
+
+>>>>>>> 2ae45eac08b0004ae0de4a76c9209d3b360fd5f1
 // Budgets
 router.get('/budgets', controllerB.getBudgets);
 router.get('/budgets/:id',passport.authenticate('jwt', { session: false }), controllerB.getBudgetById);

@@ -1,12 +1,7 @@
 require('dotenv').config(); // Ensure dotenv is configured
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const routes = require('./src/expense/routes');
-const pool = require("./db");
-
-const app = express();
+// Define routes
+app.use('/api', routes);
 
 // Middleware
 app.use(bodyParser.json({ limit: '10mb' }));
