@@ -8,11 +8,7 @@ const deleteExpense = 'DELETE FROM expenses WHERE id = $1 AND user_id = $2 RETUR
 const getIncome = 'SELECT * FROM income';
 const getIncomeByUserId = 'SELECT * FROM income WHERE user_id = $1';
 const createIncome = 'INSERT INTO income (user_id, category_id, amount, description, date) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-<<<<<<< HEAD
-const updateIncome = 'UPDATE income SET categoryid = $1, amount = $2, description = $3, date = $4 WHERE id = $5 AND user_id = $6';
-=======
 const updateIncome = 'UPDATE income SET category_id = COALESCE($1, category_id), amount = COALESCE($2, amount), description = COALESCE($3, description), date = COALESCE($4, date) WHERE id = $5 AND user_id = $6';
->>>>>>> 2ae45eac08b0004ae0de4a76c9209d3b360fd5f1
 const deleteIncome = 'DELETE FROM income WHERE id = $1 AND user_id = $2 RETURNING *';
 
 
