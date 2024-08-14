@@ -15,9 +15,9 @@ class SaveIncomeDetailsEvent extends BottomSheetEvent {
   SaveIncomeDetailsEvent({required this.incomeData});
 }
 
-class AddExpenseEvent extends BottomSheetEvent {}
+// class AddExpenseEvent extends BottomSheetEvent {}
 
-class AddIncomeEvent extends BottomSheetEvent {}
+// class AddIncomeEvent extends BottomSheetEvent {}
 
 class FetchCategoriesEvent extends BottomSheetEvent {}
 
@@ -32,3 +32,10 @@ class DeleteCategoryEvent extends BottomSheetEvent {
 
   DeleteCategoryEvent({required this.categoryId});
 }
+
+
+abstract class FontSizeEvent {}
+
+class SelectExpense extends FontSizeEvent {}
+
+class SelectIncome extends FontSizeEvent {}

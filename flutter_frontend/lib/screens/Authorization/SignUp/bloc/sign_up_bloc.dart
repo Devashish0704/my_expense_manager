@@ -28,6 +28,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           'email': event.email,
           'password': event.password,
         });
+        await Future.delayed(const Duration(seconds: 2));
+
         if (status != null) {
           emit(SignUpSuccessState());
         } else {

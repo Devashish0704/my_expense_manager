@@ -7,10 +7,9 @@ part 'log_in_event.dart';
 part 'log_in_state.dart';
 
 class LogInBloc extends Bloc<LogInEvent, LogInState> {
-    final AuthService authService;
+  final AuthService authService;
 
   LogInBloc(this.authService) : super(LogInInitialState()) {
-
     on<LogInTextChangeEvent>((event, emit) {
       if (EmailValidator.validate(event.emailValue) == false) {
         emit(LogInErrorState(errorMessage: "Enter a valid Email"));
@@ -21,24 +20,23 @@ class LogInBloc extends Bloc<LogInEvent, LogInState> {
       }
     });
 
-  on<LogInSubmittedEvent>((event, emit) async {
-  emit(LogInLoadingState());
-  try {
-    String? loginResponse = await authService.login({
-      'email': event.email,
-      'password': event.password,
+    on<LogInSubmittedEvent>((event, emit) async {
+      emit(LogInLoadingState());
+      try {
+        String? loginResponse = await authService.login({
+          'email': event.email,
+          'password': event.password,
+        });
+
+        if (loginResponse != null) {
+          await Future.delayed(const Duration(seconds: 1));
+          emit(LogInSuccessState());
+        } else {
+          emit(LogInFailureState(errorMessage: "Login failed"));
+        }
+      } catch (e) {
+        emit(LogInFailureState(errorMessage: "Login error: $e"));
+      }
     });
-
-    if (loginResponse != null) {
-      emit(LogInSuccessState());
-    } else {
-      emit(LogInFailureState(errorMessage: "Login failed"));
-    }
-  } catch (e) {
-    emit(LogInFailureState(errorMessage: "Login error: $e"));
-  }
-});
-
-   
   }
 }

@@ -1,7 +1,23 @@
-import 'package:flutter/material.dart';
 
-class HomeDrawer extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/Drawer/DraweHeader/drawer_header.dart';
+import 'package:flutter_frontend/service/auth_service.dart';
+
+
+class HomeDrawer extends StatefulWidget {
   const HomeDrawer({super.key});
+
+  @override
+  State<HomeDrawer> createState() => _HomeDrawerState();
+}
+
+class _HomeDrawerState extends State<HomeDrawer> {
+  // void initState() {
+  //   super.initState();
+  //   // Fetch the profile picture when the drawer is opened
+  //   context.read<ProfilePicBloc>().add(GetImageEvent());y
+  
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -9,52 +25,39 @@ class HomeDrawer extends StatelessWidget {
         child: ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        DrawerHeader(
-          decoration: BoxDecoration(
-            color: Colors.blue,
-          ),
-          child: Text(
-            'User Name',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-            ),
-          ),
-        ),
+        const DrawerProfileHead(),
         ListTile(
-          leading: Icon(Icons.checklist_rtl_rounded),
-          title: Text('Regular Paymnets'),
+          leading: const Icon(Icons.checklist_rtl_rounded),
+          title: const Text('Regular Paymnets'),
           onTap: () {
             Navigator.pushNamed(context, '/regular_payments');
           },
         ),
         ListTile(
-          leading: Icon(Icons.currency_rupee_sharp),
-          title: Text('Set Budget'),
+          leading: const Icon(Icons.currency_rupee_sharp),
+          title: const Text('Set Budget'),
           onTap: () {
             Navigator.pushNamed(context, '/budget');
           },
         ),
-        
         ListTile(
-          leading: Icon(Icons.message),
-          title: Text('Messages'),
+          leading: const Icon(Icons.logout_rounded),
+          title: const Text('Log Out'),
+          onTap: () {
+            AuthService().logout(context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.account_circle),
+          title: const Text('Profile'),
           onTap: () {
             // Handle the tap here
             Navigator.pop(context);
           },
         ),
         ListTile(
-          leading: Icon(Icons.account_circle),
-          title: Text('Profile'),
-          onTap: () {
-            // Handle the tap here
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.settings),
-          title: Text('Settings'),
+          leading: const Icon(Icons.settings),
+          title: const Text('Settings'),
           onTap: () {
             // Handle the tap here
             Navigator.pop(context);

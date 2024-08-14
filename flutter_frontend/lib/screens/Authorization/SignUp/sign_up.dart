@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/screens/Authorization/LogIn/logIn.dart';
 import 'package:flutter_frontend/screens/Authorization/SignUp/bloc/sign_up_bloc.dart';
+import 'package:flutter_frontend/service/auth_service.dart';
 
 class SignUpScreen extends StatelessWidget {
   final TextEditingController fullNameSignUpController =
@@ -105,6 +106,7 @@ class SignUpScreen extends StatelessWidget {
                     String email = emailSignUpController.text;
                     String fullName = fullNameSignUpController.text;
                     String password = passwordSignUpController.text;
+                    AuthService().logout(context);
 
                     if (state is SignUpValidState) {
                       BlocProvider.of<SignUpBloc>(context).add(

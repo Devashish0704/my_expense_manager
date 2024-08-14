@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/screens/BottomSheet/bloc/bottom_sheet_bloc.dart';
-import 'package:flutter_frontend/service/auth_service.dart';
 import 'package:flutter_frontend/widgets/Bottom_Sheet/income_category_dropdown.dart';
 import 'package:flutter_frontend/widgets/calender.dart';
 

@@ -7,7 +7,7 @@ final class BottomSheetInitial extends BottomSheetState {}
 
 final class AddExpenseState extends BottomSheetState {}
 
-final class AddIncomeState extends BottomSheetState {}
+// final class AddIncomeState extends BottomSheetState {}
 
 final class BottomSheetLoadingState extends BottomSheetState {}
 
@@ -50,3 +50,15 @@ final class CategoryErrorState extends BottomSheetState {
 final class ExpenseCategoryAddedState extends BottomSheetState {}
 
 final class CategoryDeletedState extends BottomSheetState {}
+
+class FontSizeState {
+  final bool isExpenseSelected;
+  final bool isIncomeSelected;
+
+  FontSizeState({required this.isExpenseSelected, required this.isIncomeSelected});
+
+  factory FontSizeState.initial() {
+    return FontSizeState(isExpenseSelected: true, isIncomeSelected: false);
+  }
+}
+

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/screens/BottomSheet/bloc/bottom_sheet_bloc.dart';
+import 'package:flutter_frontend/screens/Drawer/DraweHeader/bloc/profile_pic_bloc.dart';
 import 'package:flutter_frontend/screens/Home/bloc/home_bloc.dart';
 import 'package:flutter_frontend/widgets/Home_Screen/bottom_navigation.dart';
 import 'package:flutter_frontend/screens/Drawer/drawer.dart';
@@ -21,15 +22,50 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<BottomSheetBloc>(context).add(FetchCategoriesEvent());
+    BlocProvider.of<HomeBloc>(context).add(ShowAllEvent());
+    BlocProvider.of<ProfilePicBloc>(context).add(GetImageEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    final ScrollController scrollController = ScrollController();
+
+    void scrollToDate(
+        DateTime selectedDate, List<Map<String, dynamic>> combinedList) {
+      int index = combinedList.indexWhere((transaction) {
+        DateTime transactionDate = DateTime.parse(transaction['date']);
+        return transactionDate.year == selectedDate.year &&
+            transactionDate.month == selectedDate.month &&
+            transactionDate.day == selectedDate.day;
+      });
+
+      if (index != -1) {
+        scrollController.animateTo(
+          index *
+              80.0, // Adjust the multiplier according to the height of your items
+          duration: const Duration(seconds: 1),
+          curve: Curves.easeInOut,
+        );
+      } else {
+        // Optionally show a message if no transactions found for the selected date
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('No transactions found for the selected date')),
+        );
+      }
+    }
 
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       appBar: AppBar(
+        leading: GestureDetector(
+          child: const Icon(Icons.logout_outlined),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Text('Home'),
       ),
       body: Padding(
@@ -37,11 +73,13 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Calendar Widget
+           
             Calendar(
               onDateSelected: (selectedDate) {
-                // Handle the selected date
-                print("Selected date: $selectedDate");
+                final homeState = context.read<HomeBloc>().state;
+                if (homeState is HomeLoadedState) {
+                  scrollToDate(selectedDate, homeState.combinedList);
+                }
               },
               initialDate: DateTime.now(),
             ),
@@ -79,7 +117,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (state is HomeLoadingState) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is HomeLoadedState) {
-                      return HomeDataCards(combinedList: state.combinedList);
+                      return HomeDataCards(
+                        combinedList: state.combinedList,
+                        scrollController: scrollController,
+                      );
                     } else if (state is HomeErrorState) {
                       return Center(
                         child: Text(
@@ -97,11 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      drawer: HomeDrawer(),
+      drawer: const HomeDrawer(),
       floatingActionButton: const FabAdd(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationFab(
-        scaffoldKey: _scaffoldKey,
+        scaffoldKey: scaffoldKey,
       ),
     );
   }

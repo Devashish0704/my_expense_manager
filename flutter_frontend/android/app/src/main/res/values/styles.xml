@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- <string name="default_web_client_id" translatable="false">270134059657-d32lt6er302sloag7lb8b43kaf79noa0.apps.googleusercontent.com</string> -->
+    <string name="server_client_id" translatable="false">270134059657-5oss2534oif90tsuph3vkpoeb64rlsnn.apps.googleusercontent.com</string>
+    <string name="android_client_id" translatable="false">270134059657-5oss2534oif90tsuph3vkpoeb64rlsnn.apps.googleusercontent.com</string>
     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when

@@ -9,13 +9,16 @@ class ExpenseCategoryDropDown extends StatefulWidget {
   final Map<int, String> expenseCategoriesCanBeDeleted;
   final int? selectedCategory;
   final ValueChanged<int?> onCategoryChanged;
+  // InputBorder inputborder ;
 
   const ExpenseCategoryDropDown(
       {super.key,
       required this.expenseCategories,
       required this.expenseCategoriesCanBeDeleted,
       required this.selectedCategory,
-      required this.onCategoryChanged});
+      required this.onCategoryChanged,
+      // this.inputborder = const OutlineInputBorder()
+      });
 
   @override
   State<ExpenseCategoryDropDown> createState() =>
@@ -148,6 +151,7 @@ class _ExpenseCategoryDropDownState extends State<ExpenseCategoryDropDown> {
     return Row(
       children: [
         Expanded(
+          flex: 7,
           child: DropdownButtonFormField<int>(
             decoration: const InputDecoration(
               labelText: 'Expense Category',
@@ -168,32 +172,38 @@ class _ExpenseCategoryDropDownState extends State<ExpenseCategoryDropDown> {
             },
           ),
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        Column(
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  color: kPrimaryAccentColor,
-                  iconSize: 30,
-                  onPressed: _onAddCategory,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.remove),
-                  color: kPrimaryAccentColor,
-                  iconSize: 30,
-                  onPressed: _onRemoveCategory,
-                ),
-              ],
-            ),
-            const Text("Coustomize")
-          ],
+        // const SizedBox(
+        //   width: 10,
+        // ),
+        Expanded(
+          flex: 4,
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    color: kPrimaryAccentColor,
+                    iconSize: 30,
+                    onPressed: _onAddCategory,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    color: kPrimaryAccentColor,
+                    iconSize: 30,
+                    onPressed: _onRemoveCategory,
+                  ),
+                ],
+              ),
+              const Text("Coustomize")
+            ],
+          ),
         ),
       ],
     );
