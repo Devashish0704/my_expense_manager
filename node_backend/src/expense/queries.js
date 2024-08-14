@@ -1,21 +1,29 @@
 const getExpenses = 'SELECT * FROM expenses';
 const getExpensesByUserId = 'SELECT * FROM expenses WHERE user_id = $1';
 const createExpense = 'INSERT INTO expenses (user_id, category_id, amount, description, date) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-const updateExpense = 'UPDATE expenses SET category_id = $1, amount = $2, description = $3, date = $4 WHERE id = $5 AND user_id = $6';
+// const updateExpense = 'UPDATE expenses SET category_id = $1, amount = $2, description = $3, date = $4 WHERE id = $5 AND user_id = $6';
+const updateExpense = `UPDATE expenses SET category_id = COALESCE($1, category_id), amount = COALESCE($2, amount), description = COALESCE($3, description), date = COALESCE($4, date) WHERE id = $5 AND user_id = $6`;
 const deleteExpense = 'DELETE FROM expenses WHERE id = $1 AND user_id = $2 RETURNING *';
 
 const getIncome = 'SELECT * FROM income';
 const getIncomeByUserId = 'SELECT * FROM income WHERE user_id = $1';
 const createIncome = 'INSERT INTO income (user_id, category_id, amount, description, date) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+<<<<<<< HEAD
 const updateIncome = 'UPDATE income SET categoryid = $1, amount = $2, description = $3, date = $4 WHERE id = $5 AND user_id = $6';
+=======
+const updateIncome = 'UPDATE income SET category_id = COALESCE($1, category_id), amount = COALESCE($2, amount), description = COALESCE($3, description), date = COALESCE($4, date) WHERE id = $5 AND user_id = $6';
+>>>>>>> 2ae45eac08b0004ae0de4a76c9209d3b360fd5f1
 const deleteIncome = 'DELETE FROM income WHERE id = $1 AND user_id = $2 RETURNING *';
 
 
 const getUsers = 'SELECT * FROM users';
 const getUserById = 'SELECT * FROM users WHERE id = $1';
-const createUser = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
 const updateUser = 'UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *';
 const deleteUser = 'DELETE FROM users WHERE id = $1 RETURNING *';
+
+const upProfilePic = `UPDATE users SET profile_image = $2 WHERE id = $1`;
+const getProfilePic = 'SELECT profile_image FROM users WHERE id = $1';
+const deleteProfilePic = 'UPDATE users SET profile_image = NULL WHERE id = $1';
 
 const getCategories = 'SELECT * FROM categories';
 const getCategoryById = `SELECT id, name, description, type, user_id, is_common FROM categories WHERE user_id IS NULL OR user_id = $1`;
@@ -55,6 +63,10 @@ const beforeAll = 'CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name
 const afterAll = 'DROP TABLE IF EXISTS users';
 
 
+const createUser = `INSERT INTO users (google_id, name, email, created_at) VALUES ($1, $2, $3, NOW()) RETURNING id, name, email, created_at`;
+
+const findUserByGoogleId = `SELECT id, google_id AS googleId, name, email, created_at FROM users WHERE google_id = $1`;
+
 
 module.exports = {
   getExpenses,
@@ -72,8 +84,13 @@ module.exports = {
   getUsers,
   getUserById,
   createUser,
+  findUserByGoogleId,
   updateUser,
   deleteUser,
+
+  upProfilePic,
+  getProfilePic,
+  deleteProfilePic,
 
   getCategories,
   getCategoryById,
