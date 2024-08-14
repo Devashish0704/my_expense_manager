@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/screens/Drawer/Regular_Payment/regular_payment_input.dart';
-import 'package:flutter_frontend/screens/Drawer/bloc/regular_payment_bloc.dart';
+import 'package:flutter_frontend/screens/Drawer/Regular_Payment/bloc/regular_payment_bloc.dart';
 import 'package:intl/intl.dart';
 
 class RegularPaymentScreen extends StatefulWidget {
-  RegularPaymentScreen({super.key});
+  const RegularPaymentScreen({super.key});
 
   @override
   State<RegularPaymentScreen> createState() => _RegularPaymentScreenState();
@@ -24,7 +24,7 @@ class _RegularPaymentScreenState extends State<RegularPaymentScreen> {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        builder: (context) => RegularPaymentInput()).whenComplete(() {
+        builder: (context) => const RegularPaymentInput()).whenComplete(() {
       context.read<RegularPaymentBloc>().add(FetchRegularPaymentsEvent());
     });
   }
@@ -41,7 +41,7 @@ class _RegularPaymentScreenState extends State<RegularPaymentScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text('Regular Payments')),
+        title: const Center(child: Text('Regular Payments')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -69,27 +69,41 @@ class _RegularPaymentScreenState extends State<RegularPaymentScreen> {
                     return ListView.builder(
                       itemCount: regularPayments.length,
                       itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            subtitle:
-                                Text(regularPayments[index]['payment_name']),
-                            trailing: Text(
-                                regularPayments[index]['type'] == 'expense'
-                                    ? "-${regularPayments[index]['amount']}"
-                                    : "+${regularPayments[index]['amount']}"),
-                            leading: Text(
-                              "${regularPayments[index]['frequency']}     ",
-                              style: TextStyle(fontSize: 13),
+                        return Dismissible(
+                          key: Key(regularPayments[index]['id'].toString()),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            alignment: Alignment.centerRight,
+                            color: kPrimaryBgColor,
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                              size: 25,
                             ),
-                            title: Text(formatDate(
-                                regularPayments[index]['start_date'],
-                                'EEE, MMM d, y')),
-                            onLongPress: () {
-                              BlocProvider.of<RegularPaymentBloc>(context)
-                                  .add(LongPressEvent(
-                                RPId: regularPayments[index]['id'],
-                              ));
-                            },
+                          ),
+                          onDismissed: (direction) {
+                            BlocProvider.of<RegularPaymentBloc>(context)
+                                .add(SlideDeleteEvent(
+                              dataId: regularPayments[index]['id'] ,
+                            ));
+                          },
+                          child: Card(
+                            child: ListTile(
+                              subtitle:
+                                  Text(regularPayments[index]['payment_name']),
+                              trailing: Text(
+                                  regularPayments[index]['type'] == 'expense'
+                                      ? "-${regularPayments[index]['amount']}"
+                                      : "+${regularPayments[index]['amount']}"),
+                              leading: Text(
+                                "${regularPayments[index]['frequency']}     ",
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                              title: Text(formatDate(
+                                  regularPayments[index]['start_date'],
+                                  'EEE, MMM d, y')),
+                              onLongPress: () {},
+                            ),
                           ),
                         );
                       },

@@ -1,179 +1,216 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
-import 'package:flutter_frontend/data/expense_category_data.dart';
-import 'package:flutter_frontend/service/cat_service.dart';
-import 'package:flutter_frontend/service/expense_service.dart';
+import 'package:flutter_frontend/service/auth_service.dart';
+import 'package:flutter_frontend/service/home_service/cat_service.dart';
+import 'package:flutter_frontend/service/home_service/expense_service.dart';
 
-class Stats extends StatelessWidget {
+class Stats extends StatefulWidget {
   const Stats({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  _StatsState createState() => _StatsState();
+}
+
+class _StatsState extends State<Stats> {
+  Map<String?, double> categoryExpenses = {};
+  bool isLoading = true;
+  bool isAnimating = true; // Track initial animation state
+  final Duration animDuration =
+      const Duration(milliseconds: 2000); // Animation duration
+
+  final List<Color> colorList = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+    Colors.yellow,
+    Colors.cyan,
+    Colors.pink,
+    Colors.teal,
+    Colors.lime,
+    Colors.indigo,
+    Colors.amber,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchExpenses();
+  }
+
+  Future<void> fetchExpenses() async {
     ExpenseService expenseService = ExpenseService();
-    List<Map<String, dynamic>>? expenses = expenseService.expenses;
-    List<String> categoryIds = [];
+    await expenseService
+        .getExpensesOfUser(AuthService().userID); // Replace with actual user ID
+    calculateCategoryExpenses(expenseService.expenses);
+    setState(() {
+      isLoading = false;
+    });
+    // Start animation for a short duration
+    await Future.delayed(animDuration);
+    setState(() {
+      isAnimating = false; // Stop animation and show actual data
+    });
+  }
+
+  void calculateCategoryExpenses(List<Map<String, dynamic>>? expenses) {
+    Map<int, String> expenseCategories = CategoryService.expenseCategories;
     if (expenses != null) {
       for (var expense in expenses) {
-        if (expense.containsKey('category_id')) {
-          categoryIds.add(expense['category_id'].toString());
+        String? categoryName = expenseCategories[expense['category_id']];
+        if (categoryName != null) {
+          double amount = double.parse(expense['amount']);
+          if (categoryExpenses.containsKey(categoryName)) {
+            categoryExpenses[categoryName] =
+                (categoryExpenses[categoryName] ?? 0) + amount;
+          } else {
+            categoryExpenses[categoryName] = amount;
+          }
         }
       }
     }
 
-    List<String> categoryNamesList = [];
-    for (var categoryId in categoryIds) {
-      int id = int.parse(categoryId);
-      if (CategoryService.expenseCategories.containsKey(id)) {
-        categoryNamesList.add(CategoryService.expenseCategories[id]!);
-      }
-    }
+    // Print calculated category expenses for debugging
+    print("Calculated category expenses: $categoryExpenses");
+  }
 
-    Map<String, int> categoryCounts = {};
-    for (var categoryName in categoryNamesList) {
-      if (categoryCounts.containsKey(categoryName)) {
-        categoryCounts[categoryName] = categoryCounts[categoryName]! + 1;
-      } else {
-        categoryCounts[categoryName] = 1;
-      }
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Stats'),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: PieChartW(
-              data: categoryCounts,
-              colors: const [],
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: ListView.builder(
-                  itemCount: categoryCounts.length,
-                  itemBuilder: (context, index) {
-                    String ctaegoryName = categoryCounts.keys.elementAt(index);
-                    Color categoryColor =
-                        categoryColors[ctaegoryName] ?? Colors.grey;
-                    return colourCard(ctaegoryName, categoryColor);
-                  }),
-            ),
-          ),
-          SizedBox(
-            height: 300, // Adjust the height as needed
-            child: PieChart(
-              PieChartData(
-                sections: getSections(categoryCounts, categoryColors),
-                centerSpaceRadius: 50,
-                sectionsSpace: 4,
+          if (categoryExpenses.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 350,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: BarChart(
+                  isAnimating ? randomData() : mainBarData(),
+                  swapAnimationDuration: animDuration,
+                ),
               ),
-              swapAnimationDuration:
-                  const Duration(milliseconds: 150), // Optional
-              swapAnimationCurve: Curves.bounceIn, // Optional
             ),
-          ),
+            const SizedBox(height: 20),
+          ] else ...[
+            const Center(child: CircularProgressIndicator()),
+          ],
         ],
       ),
     );
   }
 
-  Widget colourCard(String category, Color color) {
-    return Column(
-      children: [
-        const SizedBox(width: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              width: 20,
-              height: 20,
-              color: color,
+  BarChartData mainBarData() {
+    return BarChartData(
+      barGroups: categoryExpenses.entries.map((entry) {
+        int index = categoryExpenses.keys.toList().indexOf(entry.key);
+        return BarChartGroupData(
+          x: index,
+          barRods: [
+            BarChartRodData(
+              toY: entry.value,
+              color: getColor(index),
+              width: 16,
+              borderRadius: BorderRadius.circular(6),
             ),
-            const SizedBox(width: 8),
-            Text(category),
           ],
+        );
+      }).toList(),
+      titlesData: FlTitlesData(
+        bottomTitles: AxisTitles(
+           axisNameWidget: const Text("Categories",  style: TextStyle(color: kPrimaryTextColor)),
+          axisNameSize: 30,
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, meta) {
+              final category = categoryExpenses.keys.elementAt(value.toInt());
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child:
+                    Text(category ?? '', style: const TextStyle(fontSize: 10)),
+              );
+            },
+          ),
         ),
-        const SizedBox(
-          height: 10,
-        )
-      ],
-    );
-  }
-}
-
-class PieChartW extends StatelessWidget {
-  final Map<String, int> data;
-  final List<Color> colors;
-
-  const PieChartW({super.key, required this.data, required this.colors});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: const Size(150, 150),
-      painter: PieChartPainter(data, categoryColors),
-    );
-  }
-}
-
-class PieChartPainter extends CustomPainter {
-  final Map<String, int> data;
-  final Map<String, Color> colors;
-
-  PieChartPainter(this.data, this.colors);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    int total = data.values.reduce((a, b) => a + b);
-    double startAngle = -pi / 2;
-
-    data.forEach((category, count) {
-      final sweepAngle = (count / total) * 2 * pi;
-      const spaceAngle = 0.05;
-      final paint = Paint()
-        ..color = colors[category] ?? Colors.grey
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = (size.width - 60) / 2;
-
-      canvas.drawArc(
-        Rect.fromCircle(
-            center: Offset(size.width / 2, size.height / 2),
-            radius: size.width / 2),
-        startAngle,
-        sweepAngle - spaceAngle,
-        false,
-        paint,
-      );
-      startAngle += sweepAngle;
-    });
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
-List<PieChartSectionData> getSections(
-    Map<String, int> categoryCounts, Map<String, Color> categoryColors) {
-  return categoryCounts.entries.map((entry) {
-    final category = entry.key;
-    final count = entry.value;
-    final color = categoryColors[category] ?? Colors.grey;
-    return PieChartSectionData(
-      color: color,
-      value: count.toDouble(),
-      title: category,
-      titleStyle: const TextStyle(
-        fontSize: 12,
-        fontWeight: FontWeight.bold,
-        color: kSecondaryTextColor,
+        leftTitles: const AxisTitles(
+          axisNameWidget: Text("Expenses",  style: TextStyle(color: kPrimaryTextColor)),
+          axisNameSize: 30,
+          sideTitles: SideTitles(
+            reservedSize: 40,
+            showTitles: true,
+          ),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
       ),
+      gridData: const FlGridData(show: true),
     );
-  }).toList();
+  }
+
+  BarChartData randomData() {
+    return BarChartData(
+      barGroups: List.generate(categoryExpenses.length, (i) {
+        return BarChartGroupData(
+          x: i,
+          barRods: [
+            BarChartRodData(
+              toY: Random().nextDouble() * 100,
+              color: getColor(i),
+              width: 16,
+              borderRadius: BorderRadius.circular(6),
+            ),
+          ],
+        );
+      }),
+      titlesData: FlTitlesData(
+        bottomTitles: AxisTitles(
+          axisNameWidget: const Text("Categories",  style: TextStyle(color: kPrimaryTextColor)),
+          axisNameSize: 30,
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, meta) {
+              final category = categoryExpenses.keys.elementAt(value.toInt());
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child:
+                    Text(category ?? '', style: const TextStyle(fontSize: 10)),
+              );
+            },
+          ),
+        ),
+        leftTitles: const AxisTitles(
+          axisNameWidget: Text("Expenses", style: TextStyle(color: kPrimaryTextColor),),
+          axisNameSize: 30,
+          sideTitles: SideTitles(
+            reservedSize: 40,
+            showTitles: true,
+          ),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+      ),
+      gridData: const FlGridData(show: true),
+    );
+  }
+
+  Color getColor(int index) {
+    return colorList[index % colorList.length];
+  }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/screens/Drawer/Budget/bloc/budget_bloc.dart';
 import 'package:flutter_frontend/service/auth_service.dart';
-import 'package:flutter_frontend/service/cat_service.dart';
+import 'package:flutter_frontend/service/home_service/cat_service.dart';
 import 'package:flutter_frontend/widgets/Bottom_Sheet/expense_category_dropdown.dart';
 import 'package:intl/intl.dart';
 
@@ -35,14 +35,14 @@ class _BudgetInputState extends State<BudgetInput> {
       final String allocatedBudget = _allocatedBudgetController.text;
       final String startDate = budgetStartDateController.text;
       final String endDate = budgetEndDateController.text;
-      final String category_id = selectedCategory.toString();
+      final String categoryId = selectedCategory.toString();
 
       Map<String, String> addBudgetData = {
         'user_id': AuthService().userID.toString(),
         'allocated_budget': allocatedBudget,
         'start_date': startDate,
         'end_date': endDate,
-        'category_id': category_id,
+        'category_id': categoryId,
       };
 
       BlocProvider.of<BudgetBloc>(context)
@@ -58,7 +58,7 @@ class _BudgetInputState extends State<BudgetInput> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Budget'),
+        title: const Text('Add New Budget'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,7 +68,7 @@ class _BudgetInputState extends State<BudgetInput> {
             children: [
               TextFormField(
                 controller: _allocatedBudgetController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Allocate Budget',
                   border: OutlineInputBorder(),
                 ),
@@ -82,7 +82,7 @@ class _BudgetInputState extends State<BudgetInput> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ExpenseCategoryDropDown(
                 expenseCategories: CategoryService.expenseCategories,
                 expenseCategoriesCanBeDeleted:
@@ -90,10 +90,10 @@ class _BudgetInputState extends State<BudgetInput> {
                 selectedCategory: selectedCategory,
                 onCategoryChanged: _handleCategoryChanged,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: budgetStartDateController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Start Date (YYYY-MM-DD)',
                   border: OutlineInputBorder(),
                 ),
@@ -119,18 +119,18 @@ class _BudgetInputState extends State<BudgetInput> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              SizedBox(height: 8),
+              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               TextFormField(
                 controller: budgetEndDateController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'End Date (YYYY-MM-DD)',
                   border: OutlineInputBorder(),
                 ),
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now().add(Duration(days: 30)),
+                    initialDate: DateTime.now().add(const Duration(days: 30)),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2101),
                   );
@@ -149,11 +149,11 @@ class _BudgetInputState extends State<BudgetInput> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ],
           ),

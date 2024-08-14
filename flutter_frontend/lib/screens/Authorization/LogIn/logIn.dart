@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () async {
                     String email = emailController.text;
                     String password = passwordController.text;
-
+                    // AuthService().logout(context);
                     if (state is LogInValidState) {
                       BlocProvider.of<LogInBloc>(context).add(
                           LogInSubmittedEvent(

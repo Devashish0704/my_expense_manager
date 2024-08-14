@@ -6,9 +6,9 @@ import 'package:flutter_frontend/screens/Authorization/Phone%20Verification/phon
 import 'package:flutter_frontend/screens/BottomSheet/bloc/bottom_sheet_bloc.dart';
 import 'package:flutter_frontend/screens/Drawer/Budget/bloc/budget_bloc.dart';
 import 'package:flutter_frontend/screens/Drawer/Budget/budget.dart';
-import 'package:flutter_frontend/screens/Drawer/Regular_Payment/bloc/category_bloc.dart';
+import 'package:flutter_frontend/screens/Drawer/DraweHeader/bloc/profile_pic_bloc.dart';
 import 'package:flutter_frontend/screens/Drawer/Regular_Payment/regular_payments.dart';
-import 'package:flutter_frontend/screens/Drawer/bloc/regular_payment_bloc.dart';
+import 'package:flutter_frontend/screens/Drawer/Regular_Payment/bloc/regular_payment_bloc.dart';
 import 'package:flutter_frontend/screens/Home/bloc/home_bloc.dart';
 import 'package:flutter_frontend/screens/Authorization/LogIn/bloc/log_in_bloc.dart';
 import 'package:flutter_frontend/screens/Authorization/SignUp/bloc/sign_up_bloc.dart';
@@ -18,13 +18,14 @@ import 'package:flutter_frontend/screens/Authorization/SignUp/sign_up.dart';
 import 'package:flutter_frontend/screens/stats.dart';
 import 'package:flutter_frontend/screens/welcome.dart';
 import 'package:flutter_frontend/service/auth_service.dart';
-import 'package:flutter_frontend/service/budget_service.dart';
-import 'package:flutter_frontend/service/cat_service.dart';
+import 'package:flutter_frontend/service/drawer_service/budget_service.dart';
+import 'package:flutter_frontend/service/drawer_service/profile_pic_service.dart';
+import 'package:flutter_frontend/service/drawer_service/regular_tranx_service.dart';
+import 'package:flutter_frontend/service/home_service/cat_service.dart';
 import 'package:flutter_frontend/service/dio.dart';
-import 'package:flutter_frontend/service/expense_service.dart';
-import 'package:flutter_frontend/service/income_service.dart';
+import 'package:flutter_frontend/service/home_service/expense_service.dart';
+import 'package:flutter_frontend/service/home_service/income_service.dart';
 import 'package:flutter_frontend/service/phone_verification_service.dart';
-import 'package:flutter_frontend/service/regular_tranx_service.dart';
 
 void main() {
   DioClient.setup();
@@ -33,7 +34,7 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(ExpenseService(), IncomeService(), AuthService())..add(ShowAllEvent()),
+          create: (context) => HomeBloc(ExpenseService(), IncomeService(), AuthService()),
         ),
         BlocProvider<LogInBloc>(
           create: (context) => LogInBloc(AuthService()),
@@ -47,11 +48,20 @@ void main() {
         BlocProvider<CategoryBloc>(
           create: (context) => CategoryBloc(),
         ),
+        BlocProvider<PaymentsBloc>(
+          create: (context) => PaymentsBloc(),
+        ),
         BlocProvider<BudgetBloc>(
           create: (context) => BudgetBloc(BudgetService(), AuthService()),
         ),
         BlocProvider<PhoneVerificationBloc>(
           create: (context) => PhoneVerificationBloc(PhoneVerificationService()),
+        ),
+        BlocProvider<FontSizeBloc>(
+          create: (context) => FontSizeBloc(),
+        ),
+        BlocProvider<ProfilePicBloc>(
+          create: (context) => ProfilePicBloc(ProfilePicService(), AuthService()),
         ),
         BlocProvider<BottomSheetBloc>(
             create: (context) => BottomSheetBloc(ExpenseService(), IncomeService(), CategoryService())),
@@ -85,12 +95,12 @@ class MyApp extends StatelessWidget {
         '/': (context) => const WelcomeScreen(),
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
-        '/home': (context) =>  HomeScreen(),
-        '/stats': (context) => const Stats(),
+        '/home': (context) =>  const HomeScreen(),
+        '/stats': (context) =>  const Stats(),
         '/demo': (context) => const Demo(),
-        '/regular_payments': (context) => RegularPaymentScreen(),
-        '/budget': (context) => Budget(),
-        '/verify-phone': (context) => PhoneVerification()
+        '/regular_payments': (context) => const RegularPaymentScreen(),
+        '/budget': (context) => const Budget(),
+        '/verify-phone': (context) => const PhoneVerification()
       },
     );
   }
@@ -101,3 +111,12 @@ class MyApp extends StatelessWidget {
 //     "email": "ali@example.com",
 //     "password": "pd71289"
 // }
+
+
+//  ./keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA \-keysize 2048 -validity 10000 -alias upload   
+//  pass:  123456
+//   ./keytool -list -v -keystore ~/upload-keystore.jks -alias upload
+
+
+//flutter run -d chrome --web-port=8080
+

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/screens/Drawer/Budget/bloc/budget_bloc.dart';
 import 'package:flutter_frontend/screens/Drawer/Budget/budget_input.dart';
-import 'package:flutter_frontend/service/cat_service.dart';
+import 'package:flutter_frontend/service/home_service/cat_service.dart';
 
 class Budget extends StatefulWidget {
   const Budget({super.key});
@@ -23,7 +23,7 @@ class _BudgetState extends State<Budget> {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        builder: (context) => BudgetInput()).whenComplete(() {
+        builder: (context) => const BudgetInput()).whenComplete(() {
       context.read<BudgetBloc>().add(FetchBudgetEvent());
     });
   }
@@ -34,7 +34,7 @@ class _BudgetState extends State<Budget> {
     double addRegularButtonWidth = screenWidth * 0.8;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Budget'),
+        title: const Text('Budget'),
       ),
       body: BlocConsumer<BudgetBloc, BudgetState>(
         listener: (context, state) {
@@ -50,7 +50,7 @@ class _BudgetState extends State<Budget> {
         },
         builder: (context, state) {
           if (state is BudgetLoadingState) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (state is BudgetLoadedState) {
             return ListView.builder(
               itemCount: state.BudgetsOfUser?.length,
@@ -107,12 +107,12 @@ class BudgetItem extends StatelessWidget {
   final int budgetId;
 
   const BudgetItem({
-    Key? key,
+    super.key,
     required this.allocatedBudget,
     required this.currentAmountSpent,
     required this.category,
     required this.status, required this.budgetId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -139,30 +139,30 @@ class BudgetItem extends StatelessWidget {
                 children: [
                   Text(
                     '${CategoryService.expenseCategories[category]}',
-                    style: TextStyle(fontSize: 17),
+                    style: const TextStyle(fontSize: 17),
                   ),
                   Text(
                     status,
-                    style: TextStyle(fontSize: 17),
+                    style: const TextStyle(fontSize: 17),
                   ),
                   Text('${(percentageUsed * 100).toStringAsFixed(2)}%',
-                      style: TextStyle(fontSize: 20)),
+                      style: const TextStyle(fontSize: 20)),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text('Allocated Budget: ${allocatedBudget.toStringAsFixed(2)}'),
               Text(
                   'Current Amount Spent: ${currentAmountSpent.toStringAsFixed(2)}'),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TweenAnimationBuilder<double>(
                 tween: Tween<double>(begin: 0, end: percentageUsed),
-                duration: Duration(seconds: 1),
+                duration: const Duration(seconds: 1),
                 builder: (context, value, _) {
                   return LinearProgressIndicator(
                     value: value,
                     backgroundColor: Colors.grey[300],
                     valueColor:
-                        AlwaysStoppedAnimation<Color>(kPrimaryAccentColor),
+                        const AlwaysStoppedAnimation<Color>(kPrimaryAccentColor),
                   );
                 },
               ),

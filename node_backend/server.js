@@ -1,3 +1,14 @@
+require('dotenv').config(); // Ensure dotenv is configured
+
+// Define routes
+app.use('/api', routes);
+
+// Middleware
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+app.use(cors());
+
 // Define routes
 app.use('/api', routes);
 

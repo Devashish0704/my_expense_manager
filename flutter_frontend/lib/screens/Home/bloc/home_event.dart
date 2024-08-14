@@ -3,20 +3,26 @@ part of 'home_bloc.dart';
 @immutable
 sealed class HomeEvent {}
 
-class FetchExpensesEvent extends HomeEvent {}
-
-class FetchIncomeEvent extends HomeEvent {}
-
-// class ShowExpenseEvent extends HomeEvent {}
-// class ShowIncomeEvent extends HomeEvent {}
 class ShowAllEvent extends HomeEvent {}
 
+class ClearDataEvent extends HomeEvent {} // Add this event
 
-
-
-class LongPressEvent extends HomeEvent {
+class SlideDeleteEvent extends HomeEvent {
   final int dataId;
 
-  LongPressEvent({required this.dataId});
+  SlideDeleteEvent({required this.dataId});
+}
+
+class UpdateExpenseEvent extends HomeEvent {
+  final int expenseId;
+  final Map<String, String> updateExpense;
+
+  UpdateExpenseEvent({required this.expenseId, required this.updateExpense});
+}
+class UpdateIncomeEvent extends HomeEvent {
+  final int incomeId;
+  final Map<String, String> updateIncome;
+
+  UpdateIncomeEvent({required this.incomeId, required this.updateIncome});
 
 }

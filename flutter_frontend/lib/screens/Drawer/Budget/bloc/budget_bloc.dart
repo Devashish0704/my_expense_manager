@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_frontend/service/auth_service.dart';
-import 'package:flutter_frontend/service/budget_service.dart';
+import 'package:flutter_frontend/service/drawer_service/budget_service.dart';
 import 'package:meta/meta.dart';
 
 part 'budget_event.dart';
@@ -13,14 +13,16 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
     on<FetchBudgetEvent>((event, emit) async {
       emit(BudgetLoadingState());
       try {
-        final budgetOfUser = await budgetService.checkBudgets(authService.userID);
+        final budgetOfUser =
+            await budgetService.checkBudgets(authService.userID);
+        await Future.delayed(const Duration(seconds: 2));
         emit(BudgetLoadedState(BudgetsOfUser: budgetOfUser));
       } catch (e) {
         emit(BudgetErrorState(errorMessage: e.toString()));
       }
     });
 
-     on<AddBudgetEvent>((event, emit) async {
+    on<AddBudgetEvent>((event, emit) async {
       emit(BudgetLoadingState());
       try {
         final response = await budgetService.addBudget(event.addBudgetData);
@@ -35,9 +37,9 @@ class BudgetBloc extends Bloc<BudgetEvent, BudgetState> {
             isSuccess: false, message: 'Failed to add Budget'));
       }
     });
-     on<LongPressEvent>((event, emit) async {
+    on<LongPressEvent>((event, emit) async {
       try {
-        await (authService.userID, event.budgetId);
+        (authService.userID, event.budgetId);
         await budgetService.deleteBudget(event.budgetId);
         emit(BudgetDeletedState());
         add(FetchBudgetEvent());

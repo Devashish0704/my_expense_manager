@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_frontend/screens/Drawer/Regular_Payment/bloc/category_bloc.dart';
-import 'package:flutter_frontend/screens/Drawer/bloc/regular_payment_bloc.dart';
+import 'package:flutter_frontend/screens/Drawer/Regular_Payment/bloc/regular_payment_bloc.dart';
 import 'package:flutter_frontend/service/auth_service.dart';
-import 'package:flutter_frontend/service/cat_service.dart';
+import 'package:flutter_frontend/service/home_service/cat_service.dart';
 import 'package:flutter_frontend/widgets/Bottom_Sheet/expense_category_dropdown.dart';
 import 'package:flutter_frontend/widgets/Bottom_Sheet/income_category_dropdown.dart';
 import 'package:intl/intl.dart';
@@ -59,7 +58,6 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
   }
 
   void _submitRegularPay() async {
-    print("button");
     if (_formKeyRP.currentState!.validate()) {
       String paymentName = paymentNameController.text;
       String paymentFreq = paymentFrequency;
@@ -68,7 +66,7 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
           : paymentStartDateController.text;
       String amount = amountController.text;
       String description = descriptionController.text;
-      String category_id = selectedCategory.toString();
+      String categoryId = selectedCategory.toString();
       String numberOfPaymentsValue = numberOfPayments == 'Customize'
           ? customizePaymentsController.text
           : '0';
@@ -89,7 +87,7 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
         'amount': amount,
         'start_date': paymentStartDate,
         'frequency': paymentFreq,
-        'category_id': category_id,
+        'category_id': categoryId,
         'description': description,
         'type': type
       };
@@ -98,8 +96,6 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
         addRegularPaymentData['max_payments'] = maxPayment;
         addRegularPaymentData['remaining_payments'] = remainingPayment;
       }
-
-      print(addRegularPaymentData);
 
       BlocProvider.of<RegularPaymentBloc>(context).add(
           AddRegularPaymentEvent(regularPaymentData: addRegularPaymentData));
@@ -113,13 +109,14 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
     super.initState();
     _clearControllers();
     context.read<CategoryBloc>().add(LoadExpenseCategoriesEvent());
+    context.read<PaymentsBloc>().add(SelectUnlimitedEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKeyRP,
         child: Column(
@@ -130,24 +127,24 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.cancel),
+                  icon: const Icon(Icons.cancel),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-                Text(
+                const Text(
                   'Add Payment',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
-                  icon: Icon(Icons.check),
+                  icon: const Icon(Icons.check),
                   onPressed: _submitRegularPay,
                 ),
               ],
             ),
             TextFormField(
               controller: paymentNameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Payment Name',
                 border: OutlineInputBorder(),
               ),
@@ -171,14 +168,14 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
                   paymentFrequency = newValue!;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Payment Frequency',
                 border: OutlineInputBorder(),
               ),
             ),
             TextField(
               controller: paymentStartDateController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Payment Start Date',
                 hintText: 'Select Date',
                 border: OutlineInputBorder(),
@@ -202,7 +199,7 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
             TextFormField(
               controller: amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Amount (Every Time)',
                 border: OutlineInputBorder(),
               ),
@@ -238,31 +235,31 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
                   }
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Type',
                 border: OutlineInputBorder(),
               ),
             ),
             BlocBuilder<CategoryBloc, CategoryState>(
               builder: (context, state) {
-                if (state is CategoryAndPaymentsState) {
+                if (state is CategoryLoadedState) {
                   return state.isExpense
                       ? ExpenseCategoryDropDown(
-                          expenseCategories: state.categories,
+                          expenseCategories: CategoryService.expenseCategories,
                           expenseCategoriesCanBeDeleted:
                               CategoryService.expenseCategoriesCanBeDeleted,
                           selectedCategory: selectedCategory,
                           onCategoryChanged: _handleCategoryChanged,
                         )
                       : IncomeCategoryDropdown(
-                          incomeCategories: state.categories,
+                          incomeCategories: CategoryService.incomeCategories,
                           incomeCategoriesCanBeDeleted:
                               CategoryService.incomeCategoriesCanBeDeleted,
                           selectedCategory: selectedCategory,
                           onCategoryChanged: _handleCategoryChanged,
                         );
                 } else {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               },
             ),
@@ -278,24 +275,24 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
                 setState(() {
                   numberOfPayments = newValue!;
                   if (numberOfPayments == 'Unlimited') {
-                    context.read<CategoryBloc>().add(SelectUnlimitedEvent());
+                    context.read<PaymentsBloc>().add(SelectUnlimitedEvent());
                   } else if (numberOfPayments == 'Customize') {
-                    context.read<CategoryBloc>().add(SelectCustomizeEvent());
+                    context.read<PaymentsBloc>().add(SelectCustomizeEvent());
                   }
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Number of Payments',
                 border: OutlineInputBorder(),
               ),
             ),
-            BlocBuilder<CategoryBloc, CategoryState>(
+            BlocBuilder<PaymentsBloc, PaymentsState>(
               builder: (context, state) {
-                if (state is CategoryAndPaymentsState && state.isCustomize) {
+                if (state is PaymentsLoadedState && state.isCustomize) {
                   return TextFormField(
                     controller: customizePaymentsController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Customize Number of Payments',
                       border: OutlineInputBorder(),
                     ),
@@ -316,7 +313,7 @@ class _RegularPaymentInputState extends State<RegularPaymentInput> {
             ),
             TextField(
               controller: descriptionController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Description',
                 border: OutlineInputBorder(),
               ),

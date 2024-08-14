@@ -5,14 +5,17 @@ import 'package:meta/meta.dart';
 part 'phone_verification_event.dart';
 part 'phone_verification_state.dart';
 
-class PhoneVerificationBloc extends Bloc<PhoneVerificationEvent, PhoneVerificationState> {
-    final PhoneVerificationService phoneVerificationService;
+class PhoneVerificationBloc
+    extends Bloc<PhoneVerificationEvent, PhoneVerificationState> {
+  final PhoneVerificationService phoneVerificationService;
 
-  PhoneVerificationBloc(this.phoneVerificationService) : super(PhoneVerificationInitial()) {
+  PhoneVerificationBloc(this.phoneVerificationService)
+      : super(PhoneVerificationInitial()) {
     on<SendOtpEvent>((event, emit) async {
       emit(PhoneVerificationLoadingState());
       try {
-        final response = await phoneVerificationService.sendOtp({'phoneNumber': event.phoneNumber});
+        final response = await phoneVerificationService
+            .sendOtp({'phoneNumber': event.phoneNumber});
         if (response != null) {
           emit(OtpSentState(message: response));
         } else {
@@ -26,12 +29,11 @@ class PhoneVerificationBloc extends Bloc<PhoneVerificationEvent, PhoneVerificati
     on<VerifyOtpEvent>((event, emit) async {
       emit(PhoneVerificationLoadingState());
       try {
-        
-        final response = await phoneVerificationService.verifyOtp({
-          'phoneNumber': event.phoneNumber,
-          'otp': event.otp
-        });
+        final response = await phoneVerificationService
+            .verifyOtp({'phoneNumber': event.phoneNumber, 'otp': event.otp});
         if (response != null) {
+          await Future.delayed(const Duration(seconds: 1));
+
           emit(OtpVerificationSuccessState(message: response));
         } else {
           emit(PhoneVerificationErrorState(error: 'Failed to verify OTP.'));

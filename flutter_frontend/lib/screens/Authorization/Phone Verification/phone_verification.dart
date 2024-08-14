@@ -8,6 +8,8 @@ import 'package:smart_auth/smart_auth.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class PhoneVerification extends StatefulWidget {
+  const PhoneVerification({super.key});
+
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
 }
@@ -51,7 +53,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Phone Verification'),
+        title: const Text('Phone Verification'),
       ),
       body: BlocProvider(
         create: (context) => PhoneVerificationBloc(PhoneVerificationService()),
@@ -74,7 +76,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
           },
           builder: (context, state) {
             if (state is PhoneVerificationLoadingState) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             return Padding(
               padding: const EdgeInsets.all(16.0),
@@ -93,23 +95,23 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                         onInputValidated: (bool value) {
                           print(value);
                         },
-                        selectorConfig: SelectorConfig(
+                        selectorConfig: const SelectorConfig(
                           selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                           useBottomSheetSafeArea: true,
                         ),
                         ignoreBlank: false,
                         autoValidateMode: AutovalidateMode.disabled,
                         selectorTextStyle:
-                            TextStyle(color: kSecondaryTextColor),
+                            const TextStyle(color: kSecondaryTextColor),
                         initialValue: _number,
                         textFieldController: _controller,
                         formatInput: false,
-                        keyboardType: TextInputType.numberWithOptions(
+                        keyboardType: const TextInputType.numberWithOptions(
                           signed: true,
                           decimal: true,
                         ),
-                        inputBorder: OutlineInputBorder(),
-                        inputDecoration: InputDecoration(
+                        inputBorder: const OutlineInputBorder(),
+                        inputDecoration: const InputDecoration(
                           labelText: 'Phone Number',
                           border: OutlineInputBorder(),
                         ),
@@ -126,7 +128,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                           print('On Saved: $number');
                         },
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
@@ -136,7 +138,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                 );
                           }
                         },
-                        child: Text('Send OTP'),
+                        child: const Text('Send OTP'),
                       ),
                     ] else ...[
                       Form(
@@ -166,7 +168,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                           color: Colors.grey.withOpacity(0.5),
                                           spreadRadius: 2,
                                           blurRadius: 5,
-                                          offset: Offset(0, 3),
+                                          offset: const Offset(0, 3),
                                         ),
                                       ],
                                       border: Border.all(
@@ -174,7 +176,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                     ),
                                   ),
                                   separatorBuilder: (index) =>
-                                      SizedBox(width: 8),
+                                      const SizedBox(width: 8),
                                   cursor: Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -203,7 +205,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                               .withOpacity(0.5),
                                           spreadRadius: 2,
                                           blurRadius: 5,
-                                          offset: Offset(0, 3),
+                                          offset: const Offset(0, 3),
                                         ),
                                       ],
                                       border: Border.all(color: Colors.green),
@@ -223,7 +225,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                           color: Colors.grey.withOpacity(0.5),
                                           spreadRadius: 2,
                                           blurRadius: 5,
-                                          offset: Offset(0, 3),
+                                          offset: const Offset(0, 3),
                                         ),
                                       ],
                                       border: Border.all(color: Colors.green),
@@ -243,7 +245,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                           color: Colors.grey.withOpacity(0.5),
                                           spreadRadius: 2,
                                           blurRadius: 5,
-                                          offset: Offset(0, 3),
+                                          offset: const Offset(0, 3),
                                         ),
                                       ],
                                       border:
@@ -252,7 +254,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               ElevatedButton(
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
@@ -265,7 +267,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                   }
                                   
                                 },
-                                child: Text('Verify OTP'),
+                                child: const Text('Verify OTP'),
                               ),
                             ],
                           ),
