@@ -31,7 +31,6 @@ router.post('/profile-image',passport.authenticate('jwt', { session: false }), i
 router.get('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.getImage);
 router.delete('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.deleteImage);
 
- 
 
 // Users
 router.get('/users', controllerE.getUsers);
@@ -57,6 +56,8 @@ router.get('/income/:id', passport.authenticate('jwt', { session: false }),contr
 router.post('/income', passport.authenticate('jwt', { session: false }),controllerI.createIncome);
 router.put('/income/:id', passport.authenticate('jwt', { session: false }),controllerI.updateIncome);
 router.delete('/income/:id',passport.authenticate('jwt', { session: false }), controllerI.deleteIncome);
+
+
 
 
 // Budgets

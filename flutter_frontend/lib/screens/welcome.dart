@@ -112,7 +112,7 @@ class GoogleButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.network(
-            'https://imgs.search.brave.com/5nUR1GQfO6oW2ZblD7hjaiWoloSjLmvkuCl8g_hkgbY/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9kZXZl/bG9wZXJzLmdvb2ds/ZS5jb20vc3RhdGlj/L2lkZW50aXR5L2lt/YWdlcy9icmFuZGlu/Z19ndWlkZWxpbmVf/c2FtcGxlX250X3Jk/X3NsLnN2Zw',
+            'https://res.cloudinary.com/dig5imezv/image/upload/v1723723413/goggle_logo_bt795l.webp',
             height: 24.0,
             width: 24.0,
           ),
