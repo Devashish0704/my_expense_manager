@@ -1,29 +1,21 @@
 require('dotenv').config(); // Ensure dotenv is configured
 
 const express = require('express');
-const bodyParser = require('body-parser');
-const routes = require('./src/expense/routes');
 const cors = require('cors');
+const routes = require('./src/expense/routes');
 const pool = require("./db");
 
 const app = express();
 
-// Define routes
-app.use('/api', routes);
-
 // Middleware
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-
+// app.use(express.json({ limit: '10mb' }));
+// app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Define routes
 app.use('/api', routes);
-
-// Define routes
-app.use('/api', routes);
-
-
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -37,7 +29,6 @@ app.get('/test-db', async (req, res) => {
     const result = await pool.query('SELECT NOW()');
     res.send(result.rows);
   } catch (error) {
-    
     console.error('Database connection failed:', error.stack);
     res.status(500).send('Database connection failed');
   }
