@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const routes = require('./src/expense/routes');
 const cors = require('cors');
+const pool = require("./db");
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.get('/test-db', async (req, res) => {
     const result = await pool.query('SELECT NOW()');
     res.send(result.rows);
   } catch (error) {
+    
     console.error('Database connection failed:', error.stack);
     res.status(500).send('Database connection failed');
   }
