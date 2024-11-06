@@ -8,6 +8,7 @@ const controllerB = require('./controller/budgetController');
 const controllerC = require('./controller/categoryController');
 const controllerI = require('./controller/incomeController');
 const controllerRT = require('./controller/recurring-txns');
+
 const imageController = require('./controller/imageController');
 const passport = require('./passport');
 const { registerUserValidationRules, validate } = require('../users/validation');
@@ -31,7 +32,6 @@ router.get('/profile-image/:userId',passport.authenticate('jwt', { session: fals
 router.delete('/profile-image/:userId',passport.authenticate('jwt', { session: false }), imageController.deleteImage);
 
 
-
 // Users
 router.get('/users', controllerE.getUsers);
 router.get('/users/:id', controllerE.getUserById);
@@ -48,12 +48,6 @@ router.post('/expenses', passport.authenticate('jwt', { session: false }), contr
 router.put('/expenses/:id', passport.authenticate('jwt', { session: false }), controllerE.updateExpense);
 router.delete('/expenses/:id', passport.authenticate('jwt', { session: false }), controllerE.deleteExpense);
 
-//Income
-router.get('/income', controllerI.getIncome);
-router.get('/income/:id', passport.authenticate('jwt', { session: false }),controllerI.getIncomeById);
-router.post('/income', passport.authenticate('jwt', { session: false }),controllerI.createIncome);
-router.put('/income/:id', passport.authenticate('jwt', { session: false }),controllerI.updateIncome);
-router.delete('/income/:id',passport.authenticate('jwt', { session: false }), controllerI.deleteIncome);
 
 
 //Income
@@ -62,6 +56,8 @@ router.get('/income/:id', passport.authenticate('jwt', { session: false }),contr
 router.post('/income', passport.authenticate('jwt', { session: false }),controllerI.createIncome);
 router.put('/income/:id', passport.authenticate('jwt', { session: false }),controllerI.updateIncome);
 router.delete('/income/:id',passport.authenticate('jwt', { session: false }), controllerI.deleteIncome);
+
+
 
 
 // Budgets
