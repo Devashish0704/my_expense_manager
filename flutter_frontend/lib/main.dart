@@ -120,3 +120,6 @@ class MyApp extends StatelessWidget {
 
 //flutter run -d chrome --web-port=8080
 
+
+
+// keytool -genkey -v -keystore c:/Users/chandresh/Desktop/vs codes/my_expense_manager/flutter_frontend/android/app/androidkey.jks -keyalg RSA -keysize 2048 -validity 10000 -alias keyalias

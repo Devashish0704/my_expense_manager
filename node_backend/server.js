@@ -1,5 +1,12 @@
 require('dotenv').config(); // Ensure dotenv is configured
 
+const express = require('express');
+const bodyParser = require('body-parser');
+const routes = require('./src/expense/routes');
+const cors = require('cors');
+
+const app = express();
+
 // Define routes
 app.use('/api', routes);
 
@@ -11,16 +18,7 @@ app.use(cors());
 // Define routes
 app.use('/api', routes);
 
-// Middleware to log all requests
-// app.use((req, res, next) => {
-//   console.log(`Received ${req.method} request for ${req.url}`);
-//   next();
-// });
 
-// Middleware
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(cors());
 
 // Health check endpoint
 app.get('/health', (req, res) => {
